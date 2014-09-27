@@ -10,7 +10,7 @@
   :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"}}
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2356"]
+                 [org.clojure/clojurescript "0.0-2311"]
                  [ring "1.3.1"]
                  [compojure "1.1.9"]
                  [enlive "1.1.5"]
@@ -20,7 +20,7 @@
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.4.0-SNAPSHOT"]
+                 [weasel "0.3.0"]
                  [com.datomic/datomic-pro "0.9.4899"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
@@ -29,12 +29,14 @@
 
   :min-lein-version "2.0.0"
 
-  :auto-clean false
+  ;; Uncomment for uberjar builds
+  ;;:auto-clean false
 
   :ring {:init qualityclj.server/init
-         :handler qualityclj.server/http-handler}
+         :handler qualityclj.server/http-handler
+         :port 10555}
 
-    :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
+  :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/app.js"
                                         :output-dir    "resources/public/out"
                                         :source-map    "resources/public/out.js.map"
@@ -42,6 +44,9 @@
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
+
+  :figwheel {:http-server-root "public"
+             :css-dirs ["resources/public/css"]}
 
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
