@@ -12,10 +12,13 @@
                  [compojure "1.1.9"]
                  [enlive "1.1.5"]
                  [om "0.7.1"]
+                 [racehub/om-bootstrap "0.3.0"]
+                 [prismatic/om-tools "0.3.2"]
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.4.0-SNAPSHOT"]]
+                 [weasel "0.4.0-SNAPSHOT"]
+                 [com.datomic/datomic-pro "0.9.4899"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]]
@@ -23,6 +26,8 @@
   :min-lein-version "2.0.0"
 
   :uberjar-name "qualityclj.jar"
+
+  :main qualtyclj.server
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/app.js"

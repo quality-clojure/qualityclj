@@ -1,0 +1,143 @@
+[
+ ;; a note
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/source
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The source of a note. Enumerated"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/datom
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Reference to a codeq datom."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/sha
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The SHA that a note refers to."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/flag
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The flag for a comment."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/content
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The content of a note."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/comments
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "The comments associated with a note."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/score
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "The score of a note."
+  :db.install/_attribute :db.part/db}
+
+ ;; comments
+ {:db/id #db/id[:db.part/db]
+  :db/ident :comment/user
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The user who made a comment."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :comment/time
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "The date and time that a comment was made."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :comment/content
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The content of a comment."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :comment/score
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "The score of a comment."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :comment/flag
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "A comment's flag"
+  :db.install/_attribute :db.part/db}
+
+ ;; users
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/first
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "A user's first name"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/last
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "A user's last name"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/email
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "A user's email address."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/github
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "A user's github username"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/oauth
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "A user's github OAuth access token."
+  :db.install/_attribute :db.part/db}
+
+ ;; votes
+ {:db/id #db/id[:db.part/db]
+  :db/ident :vote/direction
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "A vote's direction (up or down). Enumerated."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :vote/target
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "A the note or comment that the vote applies to."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :vote/user
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The user who made this vote."
+  :db.install/_attribute :db.part/db}
+
+ ;; flags
+ {:db/id #db/id[:db.part/db]
+  :db/ident :flag/content
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Comment to go along with a flag."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :flag/type
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The type of flag. Enumerated."
+  :db.install/_attribute :db.part/db}
+ ]

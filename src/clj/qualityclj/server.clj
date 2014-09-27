@@ -1,13 +1,14 @@
 (ns qualityclj.server
-    (:require [clojure.java.io :as io]
-              [qualityclj.dev :refer [is-dev? inject-devmode-html browser-repl]]
-              [compojure.core :refer [GET defroutes]]
-              [compojure.route :refer [resources]]
-              [compojure.handler :refer [api]]
-              [net.cgrand.enlive-html :refer [deftemplate]]
-              [ring.middleware.reload :as reload]
-              [environ.core :refer [env]]
-              [ring.adapter.jetty :refer [run-jetty]]))
+  (:require [qualityclj.db :as db]
+            [qualityclj.dev :refer [is-dev? inject-devmode-html browser-repl]]
+            [clojure.java.io :as io]
+            [compojure.core :refer [GET defroutes]]
+            [compojure.handler :refer [api]]
+            [compojure.route :refer [resources]]
+            [environ.core :refer [env]]
+            [net.cgrand.enlive-html :refer [deftemplate]]
+            [ring.adapter.jetty :refer [run-jetty]]
+            [ring.middleware.reload :as reload]))
 
 (deftemplate page
   (io/resource "index.html") [] [:body] (if is-dev? inject-devmode-html identity))
@@ -25,7 +26,7 @@
 (defn run [& [port]]
   (defonce ^:private server
     (run-jetty http-handler {:port (Integer. (or port (env :port) 10555))
-                                 :join? false}))
+                             :join? false}))
   server)
 
 (defn -main [& [port]]
