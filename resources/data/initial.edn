@@ -1,25 +1,25 @@
 [
  ;;note sources
  {:db/id #db/id[:db.part/user -200]
-  :note/source :note.source/kibit}
+  :db/ident :note.source/kibit}
  {:db/id #db/id[:db.part/user -201]
-  :note/source :note.source/eastwood}
+  :db/ident :note.source/eastwood}
  {:db/id #db/id[:db.part/user -202]
-  :note/source :note.source/user}
+  :db/ident :note.source/user}
  {:db/id #db/id[:db.part/user -203]
-  :note/source :note.source/bikeshed}
+  :db/ident :note.source/bikeshed}
  {:db/id #db/id[:db.part/user -204]
-  :note/source :note.source/cloverage}
+  :db/ident :note.source/cloverage}
 
  ;; up and down votes
  {:db/id #db/id[:db.part/user -205]
-  :vote/direction :vote.direction/up}
+  :db/ident :vote.direction/up}
  {:db/id #db/id[:db.part/user -206]
-  :vote/direction :vote.direction/down}
+  :db/ident :vote.direction/down}
 
  ;; flags
  {:db/id #db/id[:db.part/user -207]
-  :flag/type :flag.type/not-applicable}
+  :db/ident :flag.type/not-applicable}
  {:db/id #db/id[:db.part/user -208]
-  :flag/type :flag.type/abuse}
+  :db/ident :flag.type/abuse}
  ]
