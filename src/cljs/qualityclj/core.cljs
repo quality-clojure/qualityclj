@@ -1,7 +1,7 @@
 (ns qualityclj.core
-  (:require [om.core :as om :include-macros true]
+  (:require [figwheel.client :as figwheel :include-macros true]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [figwheel.client :as figwheel :include-macros true]
             [weasel.repl :as weasel]))
 
 (defonce app-state (atom {:text "Hello Chestnut!"}))

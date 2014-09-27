@@ -6,16 +6,22 @@
 
   :source-paths ["src/clj" "src/cljs"]
 
+  :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
+                                 :creds :gpg}}
+
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2342"]
                  [ring "1.3.1"]
                  [compojure "1.1.9"]
                  [enlive "1.1.5"]
                  [om "0.7.1"]
+                 [racehub/om-bootstrap "0.3.0"]
+                 [prismatic/om-tools "0.3.2"]
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.4.0-SNAPSHOT"]]
+                 [weasel "0.4.0-SNAPSHOT"]
+                 [com.datomic/datomic-pro "0.9.4899"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]]
@@ -23,6 +29,7 @@
   :min-lein-version "2.0.0"
 
   :uberjar-name "qualityclj.jar"
+
 
   :main qualityclj.server
 

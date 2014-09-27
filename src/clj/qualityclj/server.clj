@@ -17,9 +17,13 @@
   (if is-dev?
     (comp
      (html/set-attr :class "is-dev")
-     (html/prepend (html/html [:script {:type "text/javascript" :src "/out/goog/base.js"}]))
-     (html/prepend (html/html [:script {:type "text/javascript" :src "/react/react.js"}]))
-     (html/append  (html/html [:script {:type "text/javascript"} "goog.require('qualityclj.core')"])))
+     (html/prepend (html/html [:script
+                               {:type "text/javascript" :src "/out/goog/base.js"}]))
+     (html/prepend (html/html [:script
+                               {:type "text/javascript" :src "/react/react.js"}]))
+     (html/append  (html/html [:script
+                               {:type "text/javascript"}
+                               "goog.require('qualityclj.core')"])))
     identity))
 
 (deftemplate page
@@ -39,7 +43,7 @@
                     (reload/wrap-reload (site #'routes))
                     (site routes))]
       (run-jetty handler {:port (Integer. (or port (env :port) 10555))
-                                  :join? false})))
+                          :join? false})))
   server)
 
 (defn -main [& [port]]
