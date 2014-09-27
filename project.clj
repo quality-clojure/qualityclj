@@ -14,7 +14,7 @@
                  [enlive "1.1.5"]
                  [om "0.7.1"]
                  [racehub/om-bootstrap "0.3.0" :exclusions [org.clojure/clojure]]
-                 [prismatic/om-tools "0.3.2" :exclusions [org.clojure/clojure]]
+                 [prismatic/om-tools "0.3.3" :exclusions [org.clojure/clojure]]
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
