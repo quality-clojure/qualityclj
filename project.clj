@@ -10,7 +10,7 @@
   :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"}}
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2311"]
+                 [org.clojure/clojurescript "0.0-2342"]
                  [ring "1.3.1"]
                  [compojure "1.1.9"]
                  [enlive "1.1.5"]
@@ -20,7 +20,7 @@
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.3.0"]
+                 [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-pro "0.9.4899"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
@@ -44,9 +44,6 @@
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
-
-  :figwheel {:http-server-root "public"
-             :css-dirs ["resources/public/css"]}
 
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
