@@ -10,8 +10,7 @@
             [net.cgrand.enlive-html :as html :refer [deftemplate]]
             [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.reload :as reload]
-            [weasel.repl.websocket :as weasel])
-  (:gen-class))
+            [weasel.repl.websocket :as weasel]))
 
 (defn init []
   (db/ensure-db))
@@ -28,6 +27,3 @@
   (if is-dev?
     (reload/wrap-reload (site #'routes))
     (site routes)))
-
-#_(defn -main [& [port]]
-  (run port))
