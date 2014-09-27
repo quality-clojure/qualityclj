@@ -1,10 +1,11 @@
 (ns qualityclj.db
-  (:require [datomic.api :as d]))
+  (:require [datomic.api :as d]
+            [clojure.java.io :as io]))
 
 (def uri (str "datomic:sql://quality-clj?jdbc:postgresql://"
               "localhost:5432/datomic?user=datomic&password=datomic"))
-(def schema-tx (read-string (slurp "resources/data/schema.edn")))
-(def fixtures (read-string (slurp "resources/data/initial.edn")))
+(def schema-tx (read-string (slurp (io/resource "data/schema.edn"))))
+(def fixtures (read-string (slurp (io/resource "data/initial.edn"))))
 
 
 (def conn (atom nil))

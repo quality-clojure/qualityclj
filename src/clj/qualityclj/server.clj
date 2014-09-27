@@ -1,50 +1,33 @@
 (ns qualityclj.server
-  (:require [clojure.java.io :as io]
-            [compojure.core :refer [GET defroutes]]
-            [compojure.route :refer [resources]]
-            [compojure.handler :refer [site]]
-            [net.cgrand.enlive-html :as html :refer [deftemplate]]
-            [environ.core :refer [env]]
+  (:require [qualityclj.db :as db]
+            [qualityclj.dev :refer [is-dev? inject-devmode-html browser-repl]]
             [cemerick.piggieback :as piggieback]
-            [weasel.repl.websocket :as weasel]
+            [clojure.java.io :as io]
+            [compojure.core :refer [GET defroutes]]
+            [compojure.handler :refer [site]]
+            [compojure.route :refer [resources]]
+            [environ.core :refer [env]]
+            [net.cgrand.enlive-html :as html :refer [deftemplate]]
+            [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.reload :as reload]
-            [ring.adapter.jetty :refer [run-jetty]])
+            [weasel.repl.websocket :as weasel])
   (:gen-class))
 
-(def is-dev? (env :is-dev))
-
-(defn body-transforms []
-  (if is-dev?
-    (comp
-     (html/set-attr :class "is-dev")
-     (html/prepend (html/html [:script
-                               {:type "text/javascript" :src "/out/goog/base.js"}]))
-     (html/prepend (html/html [:script
-                               {:type "text/javascript" :src "/react/react.js"}]))
-     (html/append  (html/html [:script
-                               {:type "text/javascript"}
-                               "goog.require('qualityclj.core')"])))
-    identity))
+(defn init []
+  (db/ensure-db))
 
 (deftemplate page
-  (io/resource "index.html") [] [:body] (body-transforms))
+  (io/resource "index.html") [] [:body] (if is-dev? inject-devmode-html identity))
 
 (defroutes routes
   (resources "/")
   (resources "/react" {:root "react"})
   (GET "/*" req (page)))
 
-(defn browser-repl []
-  (piggieback/cljs-repl :repl-env (weasel/repl-env :ip "0.0.0.0" :port 9001)))
+(def http-handler
+  (if is-dev?
+    (reload/wrap-reload (site #'routes))
+    (site routes)))
 
-(defn run [& [port]]
-  (defonce ^:private server
-    (let [handler (if is-dev?
-                    (reload/wrap-reload (site #'routes))
-                    (site routes))]
-      (run-jetty handler {:port (Integer. (or port (env :port) 10555))
-                          :join? false})))
-  server)
-
-(defn -main [& [port]]
+#_(defn -main [& [port]]
   (run port))
