@@ -7,8 +7,7 @@
   :source-paths ["src/clj" "src/cljs"]
   :resource-paths ["resources"]
 
-  :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
-                                   :creds :gpg}}
+  :repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"}}
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2356"]
