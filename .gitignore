@@ -12,3 +12,4 @@ pom.xml
 /bin
 .metadata
 .settings
+app.js

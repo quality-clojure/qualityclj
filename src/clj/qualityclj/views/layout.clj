@@ -6,7 +6,7 @@
 
 (def devmode-html
   [(include-js "http://fb.me/react-0.11.2.js")
-   (include-js "/out/goog/base.js" "app.js")
+   (include-js "/out/goog/base.js" "js/app.js")
    [:script {:type "text/javascript"} "goog.require('qualityclj.core')"]])
 
 (defn common [& body]
@@ -17,9 +17,9 @@
     [:div#app]
     (if is-dev?
       (seq devmode-html)
-      (include-js "app.js"))
+      (include-js "js/app.js"))
     (include-css
      "https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-     "/css/screen.css"
+     "/css/main.css"
      "/css/code.css")
     body]))

@@ -34,7 +34,7 @@
   ;;:auto-clean false
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
-                             :compiler {:output-to     "resources/public/app.js"
+                             :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/out"
                                         :source-map    "resources/public/out.js.map"
                                         :preamble      ["react/react.min.js"]
