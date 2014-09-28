@@ -34,10 +34,3 @@
                 [(.contains ^String ?uri ^String ?name)]]
               (db @conn) name)]
     (d/entity (db @conn) (ffirst id))))
-
-(defn get-files
-  
-  [repo]
-  (q '[:find ?file
-       :in $ ?repo
-       :where []]))

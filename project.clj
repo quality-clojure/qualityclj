@@ -20,7 +20,7 @@
                  [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.4899"]
                  [clygments "0.1.1"]
-				 [lein-kibit "0.0.8"]]
+                 [lein-kibit "0.0.8"]]
 
   :plugins [[lein-ring "0.8.11"]
             [lein-cljsbuild "1.0.3"]
@@ -35,8 +35,8 @@
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
-                                        :output-dir    "resources/public/out"
-                                        :source-map    "resources/public/out.js.map"
+                                        :output-dir    "resources/public/js/out"
+                                        :source-map    "resources/public/js/out.js.map"
                                         :preamble      ["react/react.min.js"]
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
@@ -44,7 +44,12 @@
 
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
-                                 :auto-reload? false}}
+                                 :auto-reload? false}
+                          :cljsbuild {:builds
+                                      {:app
+                                       {:compiler
+                                        {:optimizations :advanced
+                                         :pretty-print false}}}}}
              :dev {:repl-options {:init-ns qualityclj.repl}
                    :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
                    :env {:is-dev true}

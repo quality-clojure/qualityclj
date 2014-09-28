@@ -6,7 +6,7 @@ pom.xml
 *.class
 /.lein-*
 /.nrepl-port
-/resources/public/out
+/resources/public/js
 /out
 /.repl
 /bin
