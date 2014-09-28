@@ -2,12 +2,10 @@
 /classes
 /checkouts
 pom.xml
-pom.xml.asc
 *.jar
 *.class
 /.lein-*
 /.nrepl-port
-/resources/public
+/resources/public/out
 /out
 /.repl
-/bin
