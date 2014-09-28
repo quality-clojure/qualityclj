@@ -19,7 +19,8 @@
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.0-SNAPSHOT"]
-                 [com.datomic/datomic-free "0.9.4899"]]
+                 [com.datomic/datomic-free "0.9.4899"]
+                 [clygments "0.1.1"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
