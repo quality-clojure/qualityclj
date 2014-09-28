@@ -9,3 +9,4 @@ pom.xml
 /resources/public/out
 /out
 /.repl
+app.js
