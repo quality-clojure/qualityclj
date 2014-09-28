@@ -1,18 +1,17 @@
 (defproject qualityclj "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :source-paths ["src/clj" "src/cljs"]
   :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2342"]
+                 [org.clojure/clojurescript "0.0-2356"]
                  [ring "1.3.1"]
                  [compojure "1.1.9"]
-                 [enlive "1.1.5"]
-                 [om "0.7.1"]
+                 [hiccup "1.0.5"]
+                 [ring-server "0.3.1"]
+                 [om "0.7.3"]
                  [racehub/om-bootstrap "0.3.0" :exclusions [org.clojure/clojure]]
                  [prismatic/om-tools "0.3.3" :exclusions [org.clojure/clojure]]
                  [figwheel "0.1.4-SNAPSHOT"]
@@ -22,18 +21,16 @@
                  [com.datomic/datomic-free "0.9.4899"]
                  [clygments "0.1.1"]]
 
-  :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-environ "1.0.0"]
-            [lein-ring "0.8.11"]]
+  :plugins [[lein-ring "0.8.11"]
+            [lein-cljsbuild "1.0.3"]
+            [lein-environ "1.0.0"]]
 
-  :min-lein-version "2.0.0"
+  :ring {:handler qualityclj.handler/app
+         :init qualityclj.handler/init
+         :destroy qualityclj.handler/destroy}
 
   ;; Uncomment for uberjar builds
   ;;:auto-clean false
-
-  :ring {:init qualityclj.server/init
-         :handler qualityclj.server/http-handler
-         :port 10555}
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/app.js"
@@ -47,17 +44,18 @@
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
                                  :auto-reload? false}}
-             :dev {:repl-options {:init-ns qualityclj.server}
+             :dev {:repl-options {:init-ns qualityclj.repl}
                    :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
-                   :figwheel {:http-server-root "public"
-                              :port 3449 }
-                   :env {:is-dev true}}
+                   :env {:is-dev true}
+                   :dependencies [[ring-mock "0.1.5"]
+                                  [ring/ring-devel "1.2.1"]]}
 
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
                        :omit-source true
                        :aot :all
-                       :cljsbuild {:builds {:app
-                                            {:compiler
-                                             {:optimizations :advanced
-                                              :pretty-print false}}}}}})
+                       :cljsbuild {:builds
+                                   {:app
+                                    {:compiler
+                                     {:optimizations :advanced
+                                      :pretty-print false}}}}}})

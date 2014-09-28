@@ -50,7 +50,8 @@
                         (d/h1 "Quality Clojure")
                         (d/p (str "Assess a Clojure library's quality based "
                                   "on a few different metrics."))
-                        (d/p "Coming soon!")))  ))
+                        (d/p "Coming soon!")))))
+
 
 (om/root file app-state {:target (. js/document (getElementById "app"))})
 

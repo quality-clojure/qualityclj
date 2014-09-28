@@ -1,4 +1,4 @@
-(ns qualityclj.db
+(ns qualityclj.models.db
   (:require [datomic.api :as d]
             [clojure.java.io :as io]))
 
