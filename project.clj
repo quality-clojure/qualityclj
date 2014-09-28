@@ -6,7 +6,7 @@
   :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2356"]
+                 [org.clojure/clojurescript "0.0-2311"]
                  [ring "1.3.1"]
                  [compojure "1.1.9"]
                  [hiccup "1.0.5"]
