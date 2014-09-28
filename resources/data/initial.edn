@@ -22,4 +22,11 @@
   :db/ident :flag.type/not-applicable}
  {:db/id #db/id[:db.part/user -208]
   :db/ident :flag.type/abuse}
+
+ ;; Example kibit comment
+ {:db/id #db/id [:db.part/user]
+  :note/source :note.source/kibit
+  :note/content "Consider using (+ p1__687075# 105 (rand-int 150)) instead of  (+ p1__687075# (+ 105 (rand-int 150)))"
+  }
  ]
+
