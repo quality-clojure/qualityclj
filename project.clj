@@ -19,8 +19,7 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.4899"]
-                 [clygments "0.1.1"]
-                 [lein-kibit "0.0.8"]]
+                 [clygments "0.1.1"]]
 
   :plugins [[lein-ring "0.8.11"]
             [lein-cljsbuild "1.0.3"]
@@ -31,7 +30,7 @@
          :destroy qualityclj.handler/destroy}
 
   ;; Uncomment for uberjar builds
-  ;;:auto-clean false
+  :auto-clean false
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"

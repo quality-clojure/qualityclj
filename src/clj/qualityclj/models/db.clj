@@ -12,9 +12,8 @@
   (let [new? (d/create-database uri)]
     (reset! conn (d/connect uri))
     (when new?
-      (do
-        @(d/transact @conn schema-tx)
-        @(d/transact @conn fixtures)))))
+      @(d/transact @conn schema-tx)
+      @(d/transact @conn fixtures))))
 
 (defn get-repos
   "Get a list of all repos in the database."
