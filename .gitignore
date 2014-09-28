@@ -9,3 +9,6 @@ pom.xml
 /resources/public/out
 /out
 /.repl
+/bin
+.metadata
+.settings

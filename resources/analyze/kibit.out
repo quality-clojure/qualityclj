@@ -1,0 +1,1 @@
+{:file #<URL file:/C:/Users/swb/Documents/dev/clojurecup/qualityclj/resources/analyze/core.clj>, :expr (-> (select-keys state keep-keys) (merge {:state "expired", :time (unix-time)})), :line 301, :column 24, :alt (merge (select-keys state keep-keys) {:state "expired", :time (unix-time)})}

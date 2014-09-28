@@ -1,10 +1,31 @@
 (ns qualityclj.routes.home
   (:require [compojure.core :refer :all]
             [clygments.core :refer [highlight]]
-            [qualityclj.views.layout :as layout]))
+            [qualityclj.views.layout :as layout]
+            [kibit.check :as check]
+            [clojure.java.io :as io]))
 
-(def clygmatize (highlight "(def is-dev? (env :is-dev))\n\n(def inject-devmode-html\n (comp\n (set-attr :class \"is-dev\")\n (prepend (html [:script {:type \"text/javascript\" :src \"/out/goog/base.js\"}]))\n (prepend (html [:script {:type \"text/javascript\" :src \"/react/react.js\"}]))\n (append (html [:script {:type \"text/javascript\"} \"goog.require('qualityclj.core')\"]))))\n\n(defn browser-repl []\n (piggieback/cljs-repl :repl-env (weasel/repl-env :ip \"0.0.0.0\" :port 9001)))\n" :clojure :html))
+(defn read-kibit-report-from-file
+  "Reads in a plain-text kibit-report-to-file."
+  [file]
+  (with-open [rdr (io/reader (io/resource file))]
+  (doseq [line (line-seq rdr)]
+    (println line))))
 
+(defn write-kibit-report-to-file
+ "Write a check-map in plain text to specified file."
+  [output-file check-map]
+  (let [{:keys [file line expr alt]} check-map]
+	  (with-open [wrtr (io/writer (io/file output-file))]
+     (.write wrtr (pr-str check-map))
+     (.write wrtr (str "\n")))))
+
+(defn run-kibit-over-file
+  "Run kibit over the provided source file and output to the provided file location. For now, both must be located in resources"
+  [source-file output-file]
+  (check/check-file (io/resource source-file) :reporter (partial write-kibit-report-to-file (io/resource output-file))))
+
+(defn clygmatize [source-file] (highlight (read-string (slurp (io/resource source-file))) :clojure :html))
 
 (defn home []
   (layout/common [:div#source clygmatize]))
