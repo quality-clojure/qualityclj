@@ -21,16 +21,13 @@
                  [com.datomic/datomic-free "0.9.4899"]
                  [clygments "0.1.1"]]
 
-  :plugins [[lein-ring "0.8.11"]
+  :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]]
 
   :ring {:handler qualityclj.handler/app
          :init qualityclj.handler/init
          :destroy qualityclj.handler/destroy}
-
-  ;; Uncomment for uberjar builds
-  :auto-clean false
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
