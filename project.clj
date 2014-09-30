@@ -50,7 +50,7 @@
                    :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
                    :env {:is-dev true}
                    :dependencies [[ring-mock "0.1.5"]
-                                  [ring/ring-devel "1.2.1"]]}
+                                  [ring/ring-devel "1.3.1"]]}
 
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
