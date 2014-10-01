@@ -40,7 +40,7 @@ To start a web server for the application:
 - [ ] run kibit on new clone, import results to datomic
 - [ ] run eastwood on new clone, import results to datomic
 - [ ] run bikeshed on new clone, import results to datomic
-- [ ] run pgment on each source file, output html
+- [ ] run pygment on each source file, output html
 
 ## License
 
