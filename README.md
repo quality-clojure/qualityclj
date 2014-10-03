@@ -34,13 +34,7 @@ To start a web server for the application:
     lein ring server
     
 ## TODO
-
-- [ ] git clone to local filesystem
-- [ ] import repo to datomic
-- [ ] run kibit on new clone, import results to datomic
-- [ ] run eastwood on new clone, import results to datomic
-- [ ] run bikeshed on new clone, import results to datomic
-- [ ] run pygment on each source file, output html
+Check out the [issues!](https://github.com/jcsims/qualityclj/issues)
 
 ## License
 
