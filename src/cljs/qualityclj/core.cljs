@@ -88,20 +88,6 @@
                   (d/h3 (get-in app [:repo :name])
                         (d/small (str " | " (get-in app [:repo :file :filename]))))))))
 
-(defcomponent jumbo [app owner]
-  (render [_]
-          (r/jumbotron {}
-                       (d/h1 "Welcome to Quality Clojure!")
-                       (d/p (str "This isn't actually Quality Clojure, "
-                                 "this is simply a tribute. "
-                                 "Look below for a sample."))
-                       (d/p (d/a {:class "btn btn-primary btn-large active"
-                                  :href "about"} "A tribute?")))))
-
-
-(let [elem (. js/document (getElementById "jumbo"))]
-  (when elem (om/root jumbo app-state {:target elem})))
-
 (let [elem (. js/document (getElementById "file-header"))]
   (when elem (om/root file-header app-state {:target elem})))
 
