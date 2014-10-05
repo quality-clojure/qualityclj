@@ -29,6 +29,8 @@
          :init qualityclj.handler/init
          :destroy qualityclj.handler/destroy}
 
+  :hooks [leiningen.cljsbuild]
+
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
