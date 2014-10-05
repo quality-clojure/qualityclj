@@ -1,4 +1,4 @@
-(ns qualityclj.git
+(ns qualityclj.imports.git
   (:require [clj-jgit.porcelain :as git]))
 
 (defn import-repo 
