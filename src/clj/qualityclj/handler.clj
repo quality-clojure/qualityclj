@@ -1,19 +1,17 @@
 (ns qualityclj.handler
-  (:require [compojure.core :refer [defroutes routes]]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.middleware.file-info :refer [wrap-file-info]]
-            [hiccup.middleware :refer [wrap-base-url]]
-            [compojure.handler :as handler]
+  (:require [qualityclj.models.db :as db]
+            [qualityclj.routes.home :refer [home-routes]]
+            [compojure.core :refer [defroutes routes]]
             [compojure.route :as route]
-            [qualityclj.models.db :as db]
-            [qualityclj.routes.home :refer [home-routes]]))
+            [hiccup.middleware :refer [wrap-base-url]]
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [ring.middleware.file-info :refer [wrap-file-info]]
+            [ring.middleware.resource :refer [wrap-resource]]))
 
 (defn init []
-  (db/ensure-db)
-  (println "q2 is starting"))
+  (db/ensure-db))
 
-(defn destroy []
-  (println "q2 is shutting down"))
+(defn destroy [])
 
 (defroutes app-routes
   (route/resources "/")
@@ -21,5 +19,5 @@
 
 (def app
   (-> (routes home-routes app-routes)
-      (handler/site)
+      (wrap-defaults site-defaults)
       (wrap-base-url)))
