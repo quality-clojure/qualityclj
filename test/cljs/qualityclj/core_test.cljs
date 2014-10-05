@@ -1,2 +1,2 @@
-(ns cljs.qualityclj.core_test)
+(ns qualityclj.core_test)
 

@@ -1,2 +1,2 @@
-(ns clj.qualityclj.routes.home_test)
+(ns qualityclj.routes.home_test)
 

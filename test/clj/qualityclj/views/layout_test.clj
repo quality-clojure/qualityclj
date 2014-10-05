@@ -1,2 +1,2 @@
-(ns clj.qualityclj.views.layout)
+(ns qualityclj.views.layout)
 

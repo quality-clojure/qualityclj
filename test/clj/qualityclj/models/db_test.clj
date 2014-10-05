@@ -1,2 +1,2 @@
-(ns clj.qualityclj.models.db_test)
+(ns qualityclj.models.db_test)
 

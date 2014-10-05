@@ -1,2 +1,2 @@
-(ns clj.qualityclj.handler_test)
+(ns qualityclj.handler_test)
 
