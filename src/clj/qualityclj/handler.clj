@@ -1,6 +1,7 @@
 (ns qualityclj.handler
   (:require [qualityclj.models.db :as db]
             [qualityclj.routes.home :refer [home-routes]]
+            [qualityclj.routes.file :refer [file-routes]]
             [compojure.core :refer [defroutes routes]]
             [compojure.route :as route]
             [hiccup.middleware :refer [wrap-base-url]]
@@ -18,6 +19,6 @@
   (route/not-found "Not Found"))
 
 (def app
-  (-> (routes home-routes app-routes)
+  (-> (routes home-routes file-routes app-routes)
       (wrap-defaults site-defaults)
       (wrap-base-url)))
