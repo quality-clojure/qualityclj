@@ -22,8 +22,6 @@
   "Produce an HTML file from a given source file. Takes a full path to
   the original source file as well as an output file path."
   [filename outname]
-  (println (str "Filename: " filename))
-  (println (str "Outname: " outname))
   (let [result (sh "pygmentize" "-f" "html" "-o" outname filename)]
     (when-not (= 0 (:exit result))
       (throw (Exception. (str "Error with highlighting: " (:err result)))))))
