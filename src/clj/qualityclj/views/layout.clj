@@ -1,6 +1,6 @@
 (ns qualityclj.views.layout
-  (:require[environ.core :refer [env]]
-           [hiccup.page :as page
+  (:require [environ.core :refer [env]]
+            [hiccup.page :as page
             :refer [html5 include-css include-js]]))
 
 (def is-dev? (env :is-dev))
