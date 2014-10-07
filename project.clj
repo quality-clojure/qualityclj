@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
 
   :source-paths ["src/clj" "src/cljs"]
+  :test-paths ["test/clj" "test/cljs"]
   :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
