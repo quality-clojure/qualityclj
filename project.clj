@@ -21,7 +21,7 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.4899"]
-                 [clygments "0.1.1"]]
+                 [clj-jgit "0.7.6"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]

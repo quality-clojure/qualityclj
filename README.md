@@ -14,10 +14,14 @@ At this point, you can access the repository at `/repo/<github user or org>/<rep
 
 You will need [Leiningen][1] 1.7.0 or above installed.
 
-You will also need an installation of [Datomic Free][2]
+For syntax highlighting, you'll need [Pygments][2] installed and
+available on your path.
+
+You will also need an installation of [Datomic Free][3]
 
 [1]: https://github.com/technomancy/leiningen
-[2]: https://my.datomic.com/downloads/free
+[2]: http://pygments.org/
+[3]: https://my.datomic.com/downloads/free
 
 ## Running
 
