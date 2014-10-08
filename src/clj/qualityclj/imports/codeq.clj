@@ -1,4 +1,5 @@
 (ns qualityclj.imports.codeq
+  (:require [qualityclj.models.db :refer [get-repo]])
   (:import java.io.File))
 
 
@@ -10,6 +11,10 @@
   "Feed the codeq from the local repository directory."
   [user repo]
   (let [codeq-filepath (.getPath (clojure.java.io/file codeq-path))
-        repo-filepath (.getAbsolutePath (clojure.java.io/file (str repo-path File/separator user File/separator repo)))]
-    (print repo-filepath)
-    (clojure.java.shell/sh "java" "-server" "-Xmx1g" "-jar" codeq-filepath uri :dir repo-filepath)))
+        repo-filepath (.getAbsolutePath (clojure.java.io/file 
+                                          (str repo-path 
+                                            File/separator user 
+                                            File/separator repo)))]
+    (when (nil? (get-repo user repo))
+      (clojure.java.shell/sh "java" "-server" "-Xmx1g" "-jar" 
+        codeq-filepath uri :dir repo-filepath))))
