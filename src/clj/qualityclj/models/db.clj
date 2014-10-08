@@ -23,13 +23,14 @@
                 (db @conn))))
 
 (defn get-repo
-  "Given the name of a repo, return a database entity representing the
-  repository."
-  [name]
+  "Given the user and name of a repo, return a database entity
+  representing the repository."
+  [user name]
   (let [id (q '[:find ?repo
-                :in $ ?name
+                :in $ ?name ?user
                 :where
                 [?repo :repo/uri ?uri]
-                [(.contains ^String ?uri ^String ?name)]]
-              (db @conn) name)]
+                [(.contains ^String ?uri ^String ?name)]
+                [(.contains ^String ?uri ^String ?user)]]
+              (db @conn) name user)]
     (d/entity (db @conn) (ffirst id))))
