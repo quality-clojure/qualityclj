@@ -1,5 +1,6 @@
 (ns qualityclj.imports.git
-  (:require [clj-jgit.porcelain :as git]))
+  (:require [clj-jgit.porcelain :as git])
+  (:import java.io.File))
 
 (def repo-path "repos")
 
@@ -10,4 +11,4 @@
 
    Example: (import-repo \"https://github.com/Datomic/codeq\" \"Datomic\" \"codeq\")"
   [repo-url user repo]
-  (git/git-clone-full repo-url (str repo-path "/" user "/" repo)))
+  (git/git-clone-full repo-url (str repo-path File/separator user File/separator repo)))
