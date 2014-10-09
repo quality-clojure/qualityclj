@@ -1,7 +1,6 @@
 (ns qualityclj.routes.home
   (:require [qualityclj.views.layout :as layout]
             [clojure.java.io :as io]
-            [clygments.core :refer [highlight]]
             [compojure.core :refer :all]))
 
 #_(defn read-kibit-report-from-file
@@ -27,19 +26,11 @@
                     :reporter (partial write-kibit-report-to-file
                                        (io/resource output-file))))
 
-(defn clygmatize [source-file]
-  (highlight (slurp (io/resource source-file)) :clojure :html))
-
 (defn home []
   (layout/common
    [:div#jumbo]
    [:div.container-fluid
-    [:h2 "Sample"]]
-   [:div#file-header.container-fluid]
-   [:div.container-fluid
-    [:div.row
-     [:div#source.col-xs-8 (clygmatize "analyze/prob5.clj")]
-     [:div#notes.col-xs-4]]]))
+    [:h2 "Sample"]]))
 
 (defn about []
   (layout/common
