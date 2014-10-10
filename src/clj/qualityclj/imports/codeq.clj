@@ -1,11 +1,10 @@
 (ns qualityclj.imports.codeq
-  (:require [qualityclj.models.db :refer [get-repo]]
+  (:require [qualityclj.models.db :refer [get-repo uri]]
             [taoensso.timbre :as timbre])
   (:import java.io.File))
 
 (timbre/refer-timbre)
 
-(def uri "datomic:free://localhost:4334/qualityclj")
 (def repo-path "repos")
 (def codeq-path "../../../codeq-0.1.0-SNAPSHOT-standalone.jar")
 
