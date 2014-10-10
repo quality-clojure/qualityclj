@@ -33,9 +33,19 @@ Then, start figwheel, which will send updated compiled javascript to the browser
 
     lein figwheel
 
-To start a web server for the application:
+To start a web server for the application (in development):
 
     lein ring server
+
+To create a production uberjar:
+
+    lein ring uberjar
+
+To run in a production environment, make sure to pass in the URI for
+the production database:
+
+    java -Ddb.url=datomic:free://localhost:4334/<db-name> -jar
+    standalone.jar
     
 ## TODO
 Check out the [issues!](https://github.com/jcsims/qualityclj/issues)

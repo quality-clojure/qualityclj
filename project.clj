@@ -52,9 +52,12 @@
                                          :pretty-print false}}}}}
              :dev {:repl-options {:init-ns qualityclj.repl}
                    :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
-                   :env {:is-dev true}
+                   :env {:is-dev true
+                         :db-uri "datomic:mem://qualityclj"}
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.1"]]}
+             
+             :test {:env {:db-uri "datomic:mem://qualityclj"}}
 
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
