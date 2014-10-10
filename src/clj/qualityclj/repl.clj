@@ -1,10 +1,13 @@
 (ns qualityclj.repl
   (:require [cemerick.piggieback :as piggieback]
             [hiccup.core :as html]
-            [weasel.repl.websocket :as weasel])
+            [weasel.repl.websocket :as weasel]
+            [taoensso.timbre :as timbre])
   (:use qualityclj.handler
         [ring.middleware file-info file]
         ring.server.standalone))
+
+(timbre/refer-timbre)
 
 (defonce server (atom nil))
 
@@ -33,8 +36,8 @@
                     :auto-reload? true
                     :destroy destroy
                     :join true}))
-    (println (str "You can view the site at http://localhost:" port))))
+    (info "Server started. View the site at http://localhost:" port)))
 
 (defn stop-server []
   (.stop @server)
-  (reset! server nil))
+  (spy :info "Server stopping." (reset! server nil)))
