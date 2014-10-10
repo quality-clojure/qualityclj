@@ -1,6 +1,9 @@
 (ns qualityclj.imports.codeq
-  (:require [qualityclj.models.db :refer [get-repo]])
+  (:require [qualityclj.models.db :refer [get-repo]]
+            [taoensso.timbre :as timbre])
   (:import java.io.File))
+
+(timbre/refer-timbre)
 
 (def uri "datomic:free://localhost:4334/qualityclj")
 (def repo-path "repos")
@@ -15,5 +18,6 @@
                                     File/separator user 
                                     File/separator repo)))]
     (when (nil? (get-repo user repo))
+      (debug "Importing repo " user "/" repo " into codeq.")
       (clojure.java.shell/sh "java" "-server" "-Xmx1g" "-jar" 
         codeq-filepath uri :dir repo-filepath))))
