@@ -21,7 +21,8 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.4899"]
-                 [clj-jgit "0.7.6"]]
+                 [clj-jgit "0.7.6"]
+                 [com.taoensso/timbre "3.3.1"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
@@ -52,9 +53,12 @@
                                          :pretty-print false}}}}}
              :dev {:repl-options {:init-ns qualityclj.repl}
                    :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
-                   :env {:is-dev true}
+                   :env {:is-dev true
+                         :db-uri "datomic:mem://qualityclj"}
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.1"]]}
+             
+             :test {:env {:db-uri "datomic:mem://qualityclj"}}
 
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}

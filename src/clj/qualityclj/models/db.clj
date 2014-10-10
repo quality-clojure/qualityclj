@@ -1,8 +1,9 @@
 (ns qualityclj.models.db
   (:require [datomic.api :as d :refer [q db]]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [environ.core :refer [env]]))
 
-(def uri (str "datomic:free://localhost:4334/qualityclj"))
+(def uri (env :db-uri))
 (def schema-tx (read-string (slurp (io/resource "data/schema.edn"))))
 (def fixtures (read-string (slurp (io/resource "data/initial.edn"))))
 
