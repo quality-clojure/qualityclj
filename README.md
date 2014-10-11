@@ -66,9 +66,9 @@ And you're good to go. Here is a simple example of logging to get you going:
      (spy :info (+ 0 1 2 3 4 5 6))
      (spy :warn "u liek teh math" (* 9 8 7)))
      
-;=> 2014-Oct-09 21:35:51 -0400 cat-pc DEBUG [qualityclj.repl] - startin difficult computashuns
-;=> 2014-Oct-09 21:35:51 -0400 cat-pc INFO [qualityclj.repl] - (+ 0 1 2 3 4 5 6) 21
-;=> 2014-Oct-09 21:35:51 -0400 cat-pc WARN [qualityclj.repl] - u liek the math 504
+; 2014-Oct-09 21:35:51 -0400 cat-pc DEBUG [qualityclj.repl] - startin difficult computashuns
+; 2014-Oct-09 21:35:51 -0400 cat-pc INFO [qualityclj.repl] - (+ 0 1 2 3 4 5 6) 21
+; 2014-Oct-09 21:35:51 -0400 cat-pc WARN [qualityclj.repl] - u liek the math 504
 ;=> 504
 ```
 
