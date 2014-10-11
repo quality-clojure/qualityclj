@@ -22,7 +22,8 @@
                  [weasel "0.4.0-SNAPSHOT"]
                  [com.datomic/datomic-free "0.9.4899"]
                  [clj-jgit "0.7.6"]
-                 [com.taoensso/timbre "3.3.1"]]
+                 [com.taoensso/timbre "3.3.1"]
+                 [org.clojars.jcsims/codeq "0.1.0"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
