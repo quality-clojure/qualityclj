@@ -1,18 +1,3 @@
-[Clojure]: http://clojure.org/
-[ClojureScript]: https://github.com/clojure/clojurescript
-[Clojure.test]: https://clojure.github.io/clojure/clojure.test-api.html
-[Pygments]: http://pygments.org/
-[Datomic]: https://www.datomic.com/
-[Datomic Free]: https://my.datomic.com/downloads/free
-[Datomic setup tutorial]: http://docs.datomic.com/getting-started.html
-[Timbre]: https://github.com/ptaoussanis/timbre
-[Figwheel]: https://github.com/bhauman/lein-figwheel
-[Leiningen]: https://github.com/technomancy/leiningen
-[Kibit]: https://github.com/jonase/kibit
-[Eastwood]: https://github.com/jonase/eastwood
-[Bikeshed]: https://github.com/dakrone/lein-bikeshed
-[Quality Clojure]: https://github.com/quality-clojure/qualityclj
-
 # Quality Clojure
 
 Use a number of existing tools like [Kibit], [Eastwood], and [Bikeshed] to get feedback about a particular library. When it's finished, you'll be able to point to a github repository, and the service will suck it in. From that point, there are a few things that will happen:
@@ -68,7 +53,7 @@ Alternatively, `(qualityclj.repl/start-server)` will, among other things, ensure
 
 ### Webserver
 
-To the application web server from the `qualityclj.repl` namespace:
+To start the application web server from the `qualityclj.repl` namespace:
 
     qualityclj.repl=> (start-server)
 
@@ -109,9 +94,28 @@ And you're good to go. Here is a simple example of logging to get you going:
 
 Check out [Timbre] for more information and how to use it's great logging and profiling capabilities.
 
-## TODO
+## Contributing/TODO
 Check out the [issues!](https://github.com/jcsims/qualityclj/issues)
+
+Once [#12] is taken care of, make sure that you've got a test that covers any new 
+functionality introduced, or bugs fixed.
 
 ## License
 
 Copyright © 2014 Chris Sims and Scott Bauer
+
+[Clojure]: http://clojure.org/
+[ClojureScript]: https://github.com/clojure/clojurescript
+[Clojure.test]: https://clojure.github.io/clojure/clojure.test-api.html
+[Pygments]: http://pygments.org/
+[Datomic]: https://www.datomic.com/
+[Datomic Free]: https://my.datomic.com/downloads/free
+[Datomic setup tutorial]: http://docs.datomic.com/getting-started.html
+[Timbre]: https://github.com/ptaoussanis/timbre
+[Figwheel]: https://github.com/bhauman/lein-figwheel
+[Leiningen]: https://github.com/technomancy/leiningen
+[Kibit]: https://github.com/jonase/kibit
+[Eastwood]: https://github.com/jonase/eastwood
+[Bikeshed]: https://github.com/dakrone/lein-bikeshed
+[Quality Clojure]: https://github.com/quality-clojure/qualityclj
+[#12]: https://github.com/quality-clojure/qualityclj/issues/12
