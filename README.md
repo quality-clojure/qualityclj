@@ -15,9 +15,9 @@ At this point, you can access the repository at `/repo/<github user or org>/<rep
 You will need:
 
 * [Clojure] - 1.6.0 or above.
-* [Leiningen] - 1.7.0 or above
+* [Leiningen] - 1.7.0 or above.
 * [Pygments] - For syntax highlighting; will need to be available on your path.
-* [Datomic] - Currently only tested on [Datomic Free]. Try this [setup tutorial][Datomic setup tutorial] if you have trouble.
+* [Datomic] - Currently only tested on [Datomic Free]. Try this [setup tutorial][Datomic setup tutorial] if you have trouble. Not necessary to setup Datomic Free if you are only developing.
 
 ## Setting up a Production Instance
 
@@ -67,6 +67,9 @@ Coming soon, I promise ;-)
 
 The plan is to use [clojure.test] once we have a core not in constant flux.
 
+If you are contributing, please make sure that there are tests to cover any new
+functionality introduced, or bugs fixed.
+
 ### Logging
 
 We are using [Timbre] for logging.
@@ -95,10 +98,7 @@ And you're good to go. Here is a simple example of logging to get you going:
 Check out [Timbre] for more information and how to use it's great logging and profiling capabilities.
 
 ## Contributing/TODO
-Check out the [issues!](https://github.com/jcsims/qualityclj/issues)
-
-Once [#12] is taken care of, make sure that you've got a test that covers any new
-functionality introduced, or bugs fixed.
+Check out the [issues]!
 
 ## License
 
@@ -118,4 +118,4 @@ Copyright © 2014 Chris Sims and Scott Bauer
 [Eastwood]: https://github.com/jonase/eastwood
 [Bikeshed]: https://github.com/dakrone/lein-bikeshed
 [Quality Clojure]: https://github.com/quality-clojure/qualityclj
-[#12]: https://github.com/quality-clojure/qualityclj/issues/12
+[Issues]: https://github.com/jcsims/qualityclj/issues
