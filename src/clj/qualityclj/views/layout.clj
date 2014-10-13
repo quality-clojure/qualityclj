@@ -19,7 +19,9 @@
       "Quality Clojure"]]
     [:ul.nav.navbar-nav
      [:li
-      [:a {:href "/about"} "About"]]]]])
+      [:a {:href "/about"} "About"]]
+     [:li
+      [:a {:href "/repo"} "Repos"]]]]])
 
 (def header
   "Head definition for each page."
