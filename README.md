@@ -1,4 +1,4 @@
-# Quality Clojure
+# ![](logo.png) Quality Clojure
 
 Use a number of existing tools like [Kibit], [Eastwood], and [Bikeshed] to get feedback about a particular library. When it's finished, you'll be able to point to a github repository, and the service will suck it in. From that point, there are a few things that will happen:
 
@@ -97,7 +97,7 @@ Check out [Timbre] for more information and how to use it's great logging and pr
 ## Contributing/TODO
 Check out the [issues!](https://github.com/jcsims/qualityclj/issues)
 
-Once [#12] is taken care of, make sure that you've got a test that covers any new 
+Once [#12] is taken care of, make sure that you've got a test that covers any new
 functionality introduced, or bugs fixed.
 
 ## License
