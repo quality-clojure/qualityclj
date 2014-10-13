@@ -43,7 +43,7 @@ With any luck, everything should be up, running correctly, and viewable from htt
 
 ### Datomic
 
-For development, we use an in-memory version of [Datomic] instead of more robust options, such as running the transactor with the free storage protocol.
+For development, we use an in-memory version of [Datomic] instead of more robust options, such as running the transactor with the free storage protocol. This in-memory version is already part of Quality Clojure and no installation is required by the developer to set it up. How great is that?!
 
 This means whatever is sent to the database does not persist beyond the repl or program it is launched in.
 
