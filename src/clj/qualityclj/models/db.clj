@@ -16,22 +16,57 @@
       @(d/transact @conn schema-tx)
       @(d/transact @conn fixtures))))
 
-(defn get-repos
+(defn file->entity
+  "Given a File, convert it to the appropriate db entity ready to be
+  added."
+  [file]
+  (let [file-id (d/tempid :db.part/user)]
+    {:db/id file-id
+     :file/name (.getName file)
+     :file/path (.getPath file)}))
+
+(defn import-repo
+  "Import a git repository into the database."
+  [uri user name files]
+  (let [repo-id (d/tempid :db.part/user -2000)
+        file-adds (mapv file->entity files)]
+    @(d/transact @conn [{:db/id repo-id
+                         :repo/uri uri
+                         :repo/name name
+                         :repo/username user
+                         :repo/files file-adds}])))
+
+(defn get-all-repos
   "Get a list of all repos in the database."
   []
-  (map first (q '[:find ?repo
-                  :where [_ :repo/uri ?repo]]
-                (db @conn))))
+  (q '[:find ?user ?project
+       :where
+       [?repo :repo/name ?project]
+       [?repo :repo/username ?user]]
+     (db @conn)))
 
 (defn get-repo
-  "Given the user and name of a repo, return a database entity
+  "Given the user and name of a repo, return a database entity id
   representing the repository."
   [user name]
   (let [id (q '[:find ?repo
                 :in $ ?name ?user
                 :where
-                [?repo :repo/uri ?uri]
-                [(.contains ^String ?uri ^String ?name)]
-                [(.contains ^String ?uri ^String ?user)]]
+                [?repo :repo/name ?name]
+                [?repo :repo/username ?user]]
               (db @conn) name user)]
-    (d/entity (db @conn) (ffirst id))))
+    (ffirst id)))
+
+(defn source-files
+  "Given a user and project name, return the analyzed files in the
+  repository. For now, this is just the Clojure files."
+  [user name]
+  (let [repo (get-repo user name)]
+    (if (nil? repo)
+      #{}
+      (sort (map first (q '[:find ?filepath
+                            :in $ ?repo
+                            :where
+                            [?repo :repo/files ?files]
+                            [?files :file/path ?filepath]]
+                          (db @conn) repo))))))
