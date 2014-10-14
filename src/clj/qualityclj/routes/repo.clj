@@ -24,15 +24,15 @@
 (defn show-repo
   "Show the files from a particular repo."
   [user repo]
-  (let [files (db/source-files user repo)]
+  (let [files (db/source-files user repo)
+        files (map #(string/replace % #"\\" "/") files)]
     (layout/common
      [:div.container-fluid
       [:h2 (str user "/" repo)]
       (if (empty? files)
         [:p "No such repository."]
         [:ul#files
-         (for [file (map #(string/replace-first % repo-path "")
-                         (db/source-files user repo))]
+         (for [file (map #(string/replace-first % repo-path "") files)]
            [:li.file (link-to (str "/repo" file ".html") file)])])])))
 
 (defn serve-file
