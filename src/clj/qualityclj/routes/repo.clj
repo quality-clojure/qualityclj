@@ -49,6 +49,6 @@
 
 (defroutes repo-routes
   (context "/repo" []
-    (GET "/" [] (list-repos))
-    (GET "/:user/:repo" [user repo] (show-repo user repo))
-    (GET "/*" request (serve-file (:* (:params request))))))
+           (GET "/" [] (list-repos))
+           (GET "/:user/:repo" [user repo] (show-repo user repo))
+           (GET "/*" request (serve-file (:* (:params request))))))
