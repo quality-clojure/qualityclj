@@ -5,7 +5,8 @@
             [clojure.string :as string]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [hiccup.element :refer [link-to]]))
+            [hiccup.element :refer [link-to]])
+  (:import java.io.File))
 
 (def repo-path "repos")
 (def highlight-path "highlight")
@@ -32,23 +33,22 @@
         [:ul#files
          (for [file (map #(string/replace-first % repo-path "")
                          (db/source-files user repo))]
-           [:li.file (link-to (str "/file" file ".html") file)])])])))
+           [:li.file (link-to (str "/repo" file ".html") file)])])])))
 
 (defn serve-file
   "Given a filepath, serve the highlighted file."
   [filepath]
-  (let [highlight-filepath (string/replace-first filepath
-                                                 repo-path highlight-path)
+  (let [highlight-filepath (str highlight-path File/separator  filepath)
         file (io/file highlight-filepath)]
     (if (.exists file)
       (layout/common
        [:div.container-fluid
         [:h2 (string/replace-first filepath repo-path "")]
         [:div (slurp file)]])
-      (route/not-found (str "No such file: " filepath)))))
+      (route/not-found (str "No such file: " file)))))
 
 (defroutes repo-routes
   (context "/repo" []
     (GET "/" [] (list-repos))
     (GET "/:user/:repo" [user repo] (show-repo user repo))
-    (GET "/*" []  (println :*))))
+    (GET "/*" request (serve-file (:* (:params request))))))
