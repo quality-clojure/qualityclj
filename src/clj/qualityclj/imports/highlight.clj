@@ -23,10 +23,11 @@
   considered source code in need of highlighting is located under the
   'src' folder at the root of the repository.
 
-  TODO: Issue #20. Parse the source directory defined in project.clj and use that
-  for highlighting.
+  TODO: Issue #20. Parse the source directory defined in project.clj
+  and use that for highlighting.
 
-  TODO: Issue #21. This currently only targets Clojure src files, not ClojureScript, or test files."
+  TODO: Issue #21. This currently only targets Clojure src files, not
+  ClojureScript, or test files."
   [user project]
   (let [result (sh "pygmentize")]
     (when-not (= 0 (:exit result))

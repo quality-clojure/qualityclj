@@ -10,10 +10,10 @@
 
 (defn import-repo
   "Feed the codeq from the local repository directory."
-  [user repo]
+  [user project]
   (let [repo-filepath (str repo-path
                            File/separator user
-                           File/separator repo)]
-    (when (nil? (get-repo user repo))
-      (debug "Importing repo " user "/" repo " into codeq.")
+                           File/separator project)]
+    (when (nil? (get-repo user project))
+      (debug "Importing repo " user "/" project " into codeq.")
       (codeq uri repo-filepath))))
