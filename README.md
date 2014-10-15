@@ -1,6 +1,6 @@
-[![Stories in Ready](https://badge.waffle.io/quality-clojure/qualityclj.png?label=ready&title=Ready)](https://waffle.io/quality-clojure/qualityclj)
 # ![](logo.png) Quality Clojure
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/quality-clojure/qualityclj?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Stories in Ready](https://badge.waffle.io/quality-clojure/qualityclj.png?label=ready&title=Ready)](https://waffle.io/quality-clojure/qualityclj)
 
 Use a number of existing tools like [Kibit], [Eastwood], and [Bikeshed] to get feedback about a particular library. When it's finished, you'll be able to point to a github repository, and the service will suck it in. From that point, there are a few things that will happen:
 
