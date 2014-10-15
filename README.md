@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/quality-clojure/qualityclj.png?label=ready&title=Ready)](https://waffle.io/quality-clojure/qualityclj)
 # ![](logo.png) Quality Clojure
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/quality-clojure/qualityclj?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
