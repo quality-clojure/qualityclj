@@ -1,7 +1,13 @@
 (ns qualityclj.linters.kibit
-  (:require [taoensso.timbre :as timbre]))
+  (:require [taoensso.timbre :as timbre]
+            [clojure.java.io :as io]
+            [kibit.check :as check]
+            [clojure.string :as s])
+  (:import java.io.File))
 
 (timbre/refer-timbre)
+
+(def repo-path "repos")
 
 #_(defn read-kibit-report-from-file
     "Reads in a plain-text kibit-report-to-file."
@@ -18,10 +24,22 @@
         (.write wrtr (pr-str check-map))
         (.write wrtr (str "\n")))))
 
-(defn run-kibit-over-file
-  "Run kibit over the provided source file and output to the provided
-  file location. For now, both must be located in resources"
-  [source-file output-file]
-  (check/check-file (io/resource source-file)
-                    :reporter (partial write-kibit-report-to-file
-                                       (io/resource output-file))))
+(defn report-to-db
+  "Send the result from kibit to the db as a note."
+  [check-map]
+  (let [{:keys [file line expr alt]} check-map
+        content (str "Instead of:\n\t" expr "\nTry:\n\t" alt)]
+    ;; DB note creating and sending would happen here. Need to make sure the code snippets won't execute.
+    ))
+
+(defn kibitize-file
+  "Run kibit over the provided project and
+  use the reporter for kibit's output."
+  [user project reporter]
+  (let [src-folder "src"
+        src-path (io/file
+                  (s/join File/separator [repo-path user project src-folder]))
+        files (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
+                      (file-seq src-path))]
+    ;; Map check-file over each file returned from the filter.
+    (map #(check/check-file (.getPath %1) :reporter reporter) files)))
