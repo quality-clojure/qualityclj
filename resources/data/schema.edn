@@ -7,16 +7,16 @@
   :db/doc "The source of a note. Enumerated"
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
-  :db/ident :note/datom
+  :db/ident :note/file
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Reference to a codeq datom."
+  :db/doc "The file associated with a note."
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
-  :db/ident :note/sha
-  :db/valueType :db.type/ref
+  :db/ident :note/line-number
+  :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
-  :db/doc "The SHA that a note refers to."
+  :db/doc "The line number associated with a note."
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
   :db/ident :note/flag
@@ -188,10 +188,5 @@
   :db/cardinality :db.cardinality/one
   :db/doc "Full path to a file"
   :db.install/_attribute :db.part/db}
- {:db/id #db/id[:db.part/db]
-  :db/ident :file/highlighted
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Highlight HTML for the file."
-  :db.install/_attribute :db.part/db}
+
  ]
