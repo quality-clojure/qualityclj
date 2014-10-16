@@ -2,6 +2,7 @@
   (:require [taoensso.timbre :as timbre]
             [clojure.java.io :as io]
             [kibit.check :as check]
+            [qualityclj.models.db :as db]
             [clojure.string :as s])
   (:import java.io.File))
 
@@ -24,13 +25,12 @@
         (.write wrtr (pr-str check-map))
         (.write wrtr (str "\n")))))
 
-(defn report-to-db
+(defn note-reporter
   "Send the result from kibit to the db as a note."
   [check-map]
   (let [{:keys [file line expr alt]} check-map
         content (str "Instead of:\n\t" expr "\nTry:\n\t" alt)]
-    ;; DB note creating and sending would happen here. Need to make sure the code snippets won't execute.
-    ))
+    (db/add-note file line content :kibit)))
 
 (defn kibitize-file
   "Run kibit over the provided project and

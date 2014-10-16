@@ -113,12 +113,14 @@
   entities with keys that correspond to attributes defined in the
   database schema. See 'resources/data/schema.edn' for details."
   ([user project filename]
-     (get-notes (get-filepath user project filename)))
+   (get-notes (get-filepath user project filename)))
+  ([user project]
+   (map (partial get-notes) (source-files user project)))
   ([filepath]
-     (map #(d/entity (db @conn) (first %))
-          (q '[:find ?note
-               :in $ ?filepath
-               :where
-               [?note :note/file ?file]
-               [?file :file/path ?filepath]]
-             (db @conn) filepath))))
+   (map #(d/entity (db @conn) (first %))
+        (q '[:find ?note
+             :in $ ?filepath
+             :where
+             [?note :note/file ?file]
+             [?file :file/path ?filepath]]
+           (db @conn) filepath))))
