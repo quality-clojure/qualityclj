@@ -57,6 +57,16 @@
               (db @conn) name user)]
     (ffirst id)))
 
+(defn remove-repo
+  "Given a user/org name and a project name, remove all traces of a
+  repo from the database."
+  [user project]
+  (let [repo-id (get-repo user project)]
+    (if-not (nil? repo-id)
+      @(d/transact @conn [[:db.fn/retractEntity repo-id]])
+      (throw (IllegalArgumentException.
+              (str "No repo " user "/" project " to delete."))))))
+
 (defn source-files
   "Given a user and project name, return the analyzed files in the
   repository. For now, this is just the Clojure files."
