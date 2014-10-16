@@ -179,8 +179,6 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "A filename"
-  :db/fulltext true
-  :db/unique :db.unique/identity
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
   :db/ident :file/path
