@@ -49,24 +49,78 @@
   "Given the user and name of a repo, return a database entity id
   representing the repository."
   [user name]
-  (let [id (q '[:find ?repo
-                :in $ ?name ?user
-                :where
-                [?repo :repo/name ?name]
-                [?repo :repo/username ?user]]
-              (db @conn) name user)]
-    (ffirst id)))
+  (ffirst (q '[:find ?repo
+               :in $ ?name ?user
+               :where
+               [?repo :repo/name ?name]
+               [?repo :repo/username ?user]]
+             (db @conn) name user)))
 
 (defn source-files
-  "Given a user and project name, return the analyzed files in the
-  repository. For now, this is just the Clojure files."
+  "Given a user and project name, return a sorted list of the analyzed
+  files in the repository. For now, this is just the Clojure files."
   [user name]
   (let [repo (get-repo user name)]
     (if (nil? repo)
-      #{}
+      '()
       (sort (map first (q '[:find ?filepath
                             :in $ ?repo
                             :where
                             [?repo :repo/files ?files]
                             [?files :file/path ?filepath]]
                           (db @conn) repo))))))
+
+(defn get-filepath
+  "Given a user, project, and filename, return the filepath associated
+  with that file."
+  [user project filename]
+  (let [repo (get-repo user project)]
+    (ffirst (q '[:find ?filepath
+                 :in $ ?repo ?filename
+                 :where
+                 [?repo :repo/files ?file]
+                 [?file :file/name ?filename]
+                 [?file :file/path ?filepath]]
+               (db @conn) repo filename))))
+
+(def note->key
+  {:kibit     :note.source/kibit
+   :eastwood  :note.source/eastwood
+   :user      :note.source/user
+   :bikeshed  :note.source/bikeshed
+   :cloverage :note.source/cloverage})
+
+(defn add-note
+  "Insert a note in the database."
+  [filepath line-number content type]
+  (let [file (ffirst (q '[:find ?file
+                          :in $ ?filepath
+                          :where [?file :file/path ?filepath]]
+                        (db @conn) filepath))
+        note-key (type note->key)]
+    (if (nil? file)
+      (throw (IllegalArgumentException.
+              (str "Filepath " filepath " is not in the database.")))
+      @(d/transact @conn [{:db/id #db/id[:db.part/user]
+                           :note/source note-key
+                           :note/file file
+                           :note/line-number line-number
+                           :note/content content}]))))
+
+(defn get-notes
+  "Given either a full filepath, or a user, project, and filename,
+  return the notes associated with that file. The notes are database
+  entities with keys that correspond to attributes defined in the
+  database schema. See 'resources/data/schema.edn' for details."
+  ([user project filename]
+     (get-notes (get-filepath user project filename)))
+  ([user project]
+     (map (partial get-notes) (source-files user project)))
+  ([filepath]
+     (map #(d/entity (db @conn) (first %))
+          (q '[:find ?note
+               :in $ ?filepath
+               :where
+               [?note :note/file ?file]
+               [?file :file/path ?filepath]]
+             (db @conn) filepath))))

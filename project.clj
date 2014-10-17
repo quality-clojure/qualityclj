@@ -23,6 +23,7 @@
                  [com.datomic/datomic-free "0.9.4899"]
                  [clj-jgit "0.7.6"]
                  [com.taoensso/timbre "3.3.1"]
+                 [lein-kibit "0.0.8"]
                  [org.clojars.jcsims/codeq "0.1.0"]]
 
   :plugins [[lein-ring "0.8.12"]
