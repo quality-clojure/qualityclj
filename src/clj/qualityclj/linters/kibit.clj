@@ -1,24 +1,42 @@
-(ns qualityclj.linters.kibit)
+(ns qualityclj.linters.kibit
+  (:require [taoensso.timbre :as timbre :refer [info]]
+            [clojure.java.io :as io]
+            [kibit.check :as check]
+            [qualityclj.models.db :as db]
+            [clojure.string :as s]
+            [clojure.pprint :as pp])
+  (:import java.io.File
+           java.io.StringWriter))
 
-#_(defn read-kibit-report-from-file
-  "Reads in a plain-text kibit-report-to-file."
-  [file]
-  (with-open [rdr (io/reader (io/resource file))]
-    (doseq [line (line-seq rdr)]
-      (println line))))
+(def repo-path "repos")
 
-#_(defn write-kibit-report-to-file
-  "Write a check-map in plain text to specified file."
-  [output-file check-map]
-  (let [{:keys [file line expr alt]} check-map]
-    (with-open [wrtr (io/writer (io/file output-file))]
-      (.write wrtr (pr-str check-map))
-      (.write wrtr (str "\n")))))
+(defn pprint-code
+  "Get the expr in the right format for printing."
+  [expr]
+  (let [writer (StringWriter.)]
+    (pp/write expr
+              :dispatch pp/code-dispatch
+              :stream writer
+              :pretty true)
+    (str writer)))
 
-#_(defn run-kibit-over-file
-  "Run kibit over the provided source file and output to the provided
-  file location. For now, both must be located in resources"
-  [source-file output-file]
-  (check/check-file (io/resource source-file)
-                    :reporter (partial write-kibit-report-to-file
-                                       (io/resource output-file))))
+(defn note-reporter
+  "Send the result from kibit to the db as a note."
+  [check-map]
+  (let [{:keys [file line expr alt]} check-map
+        content (str "Instead of:\n\t" (pprint-code expr) "\nTry:\n\t"
+                     (pprint-code alt))]
+    (db/add-note file line content :kibit)))
+
+(defn kibitize-project
+  "Run kibit over the provided project and
+  use the reporter for kibit's output."
+  [user project reporter]
+  (let [src-folder "src"
+        src-path (io/file
+                  (s/join File/separator [repo-path user project src-folder]))]
+    (doseq [file (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
+                         (file-seq src-path))]
+      ;; Map check-file over each file returned from the filter.
+      (info (.getPath file))
+      (check/check-file (.getPath file) :reporter reporter))))
