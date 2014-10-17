@@ -31,12 +31,12 @@
 (defn kibitize-project
   "Run kibit over the provided project and
   use the reporter for kibit's output."
-  [user project reporter]
+  [user project]
   (let [src-folder "src"
         src-path (io/file
                   (s/join File/separator [repo-path user project src-folder]))]
+    ;; Run check-file over each file returned from the filter.
     (doseq [file (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
                          (file-seq src-path))]
-      ;; Map check-file over each file returned from the filter.
       (info (.getPath file))
-      (check/check-file (.getPath file) :reporter reporter))))
+      (check/check-file (.getPath file) :reporter 'note-reporter))))
