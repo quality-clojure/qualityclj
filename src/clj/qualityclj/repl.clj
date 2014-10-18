@@ -2,12 +2,10 @@
   (:require [cemerick.piggieback :as piggieback]
             [hiccup.core :as html]
             [weasel.repl.websocket :as weasel]
-            [taoensso.timbre :as timbre])
+            [taoensso.timbre :as timbre :refer [info spy]])
   (:use qualityclj.handler
         [ring.middleware file-info file]
         ring.server.standalone))
-
-(timbre/refer-timbre)
 
 (defonce server (atom nil))
 

@@ -7,7 +7,7 @@
 
 (def devmode-html
   [(include-js "http://fb.me/react-0.11.2.js")
-   (include-js "/js/out/goog/base.js" "js/app.js")
+   (include-js "/js/out/goog/base.js" "/js/app.js")
    [:script {:type "text/javascript"} "goog.require('qualityclj.core')"]])
 
 (def nav
@@ -43,4 +43,4 @@
     body
     (if is-dev?
       (seq devmode-html)
-      (include-js "js/app.js"))]))
+      (include-js "/js/app.js"))]))

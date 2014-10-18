@@ -1,6 +1,6 @@
 (defproject qualityclj "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :url "https://github.com/quality-clojure/qualityclj"
 
   :source-paths ["src/clj" "src/cljs"]
   :test-paths ["test/clj" "test/cljs"]
@@ -24,7 +24,8 @@
                  [clj-jgit "0.7.6"]
                  [com.taoensso/timbre "3.3.1"]
                  [lein-kibit "0.0.8"]
-                 [org.clojars.jcsims/codeq "0.1.0"]]
+                 [org.clojars.jcsims/codeq "0.1.0"]
+                 [lib-noir "0.9.3"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]

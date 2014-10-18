@@ -1,11 +1,8 @@
 (ns qualityclj.imports.highlight
-  (:require [clojure.java.shell :refer [sh]]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
+            [clojure.java.shell :refer [sh]]
             [clojure.string :as s])
   (:import java.io.File))
-
-(def repo-path "repos")
-(def highlight-path "highlight")
 
 (defn highlight
   "Produce an HTML file from a given source file. Takes a full path to
@@ -43,15 +40,24 @@
 
   TODO: Issue #20. Parse the source directory defined in project.clj
   and use that for highlighting."
-  [user project]
+  [user project src-path repo-path highlight-path]
   (let [result (sh "pygmentize")]
     (when-not (= 0 (:exit result))
       (throw (Exception. "Pygments is not available on the execution path."))))
-  (let [src-folder "src"
-        src-path (io/file (s/join File/separator
+  (let [src-path (io/file (s/join File/separator
                                   [repo-path user project src-folder]))
-        test-folder "test"
         test-path (io/file (s/join File/separator
                                    [repo-path user project test-folder]))]
-    (highlight-directory src-path)
-    (highlight-directory test-path)))
+    (if-not (.exists src-path)
+      (throw (IllegalArgumentException. "Project does not exist!"))
+      ((highlight-directory src-path)
+       (highlight-directory test-path)))))
+
+(defn remove-project
+  "Given a user/org name, a project name, and the highlight folder
+  prefix, remove a project's highlighted source files."
+  [user project highlight-path]
+  (let [dir (io/file (str highlight-path
+                          File/separator user
+                          File/separator project))]
+    (mapv io/delete-file (reverse (file-seq dir)))))
