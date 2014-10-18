@@ -16,12 +16,14 @@
   TODO: Issue #20. Parse the source directory defined in project.clj
   and use that for importing.
 
-  TODO: Issue #21. This currently only targets Clojure src files, not
-  ClojureScript, or test files."
+  TODO: Issue #21. This currently only targets Clojure and Clojurescript
+  src files, not test files."
   [uri user project]
   (let [src-folder "src"
         src-path (io/file (s/join File/separator
                                   [repo-path user project src-folder]))
-        files (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
+        files (filter #(and (.isFile %)
+                            (or (.endsWith (.getPath %) "clj")
+                                (.endsWith (.getPath %) "cljs")))
                       (file-seq src-path))]
     (db/import-repo uri user project files)))
