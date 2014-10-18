@@ -20,7 +20,7 @@
       [user project]
       (throw (IllegalArgumentException. "Not a valid git URL.")))))
 
-(defn import-project
+(defn import-or-update-project
   "Given a valid git URL, run the gamut of import functions. Will
   either import a new project, or update an existing one. On update,
   will pull any new commits, and update highlighting and linters."
