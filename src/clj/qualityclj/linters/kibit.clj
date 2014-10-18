@@ -8,8 +8,6 @@
   (:import java.io.File
            java.io.StringWriter))
 
-(def repo-path "repos")
-
 (defn pprint-code
   "Get the expr in the right format for printing."
   [expr]
@@ -31,7 +29,7 @@
 (defn kibitize-project
   "Run kibit over the provided project and
   use the reporter for kibit's output."
-  [user project reporter]
+  [user project reporter repo-path]
   (let [src-folder "src"
         src-path (io/file
                   (s/join File/separator [repo-path user project src-folder]))]

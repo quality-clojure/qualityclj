@@ -2,6 +2,7 @@
   (:require [qualityclj.imports.db :as db]
             [qualityclj.imports.git :as git]
             [qualityclj.imports.highlight :as highlight]
+            [qualityclj.linters.kibit :as kibit]
             [clojure.string :as s]))
 
 (def repo-path "repos")
@@ -20,12 +21,15 @@
       (throw (IllegalArgumentException. "Not a valid git URL.")))))
 
 (defn import-project
-  "Given a valid git URL, run the gamut of import functions."
+  "Given a valid git URL, run the gamut of import functions. Will
+  either import a new project, or update an existing one. On update,
+  will pull any new commits, and update highlighting and linters."
   [url]
   (let [[user project] (extract-user-project url)]
     (git/import-repo url user project repo-path)
     (highlight/highlight-project user project src-path repo-path highlight-path)
-    (db/import-project url user project repo-path)))
+    (db/import-project url user project repo-path)
+    (kibit/kibitize-project user project kibit/note-reporter repo-path)))
 
 (defn remove-project
   "Given a user/org name and a project name, remove all traces of the

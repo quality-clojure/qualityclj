@@ -11,9 +11,12 @@
   Example: (import-repo \"https://github.com/Datomic/codeq\"
   \"Datomic\" \"codeq\")"
   [repo-url user repo repo-path]
-  (git/git-clone-full repo-url (str repo-path
-                                    File/separator user
-                                    File/separator repo)))
+  (let [path (str repo-path File/separator user File/separator repo)]
+    (if (git/discover-repo path)
+      (git/with-repo path
+        ;; TODO: test this!
+        (git/git-pull repo))
+      (git/git-clone-full repo-url path))))
 
 (defn remove-repo
   "Given a user/org name and a project name, remove the repo from the
