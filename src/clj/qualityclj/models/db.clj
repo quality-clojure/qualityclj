@@ -28,7 +28,7 @@
 (defn import-repo
   "Import a git repository into the database."
   [uri user name files]
-  (let [repo-id (d/tempid :db.part/user -2000)
+  (let [repo-id (d/tempid :db.part/user)
         file-adds (mapv file->entity files)]
     @(d/transact @conn [{:db/id repo-id
                          :repo/uri uri
@@ -55,6 +55,15 @@
                [?repo :repo/name ?name]
                [?repo :repo/username ?user]]
              (db @conn) name user)))
+
+(defn remove-repo
+  "Given a user/org name and a project name, remove all traces of a
+  repo from the database. Idempotent - removing a nonexistent repo
+  does nothing."
+  [user project]
+  (let [repo-id (get-repo user project)]
+    (when-not (nil? repo-id)
+      @(d/transact @conn [[:db.fn/retractEntity repo-id]]))))
 
 (defn source-files
   "Given a user and project name, return a sorted list of the analyzed
@@ -97,15 +106,19 @@
                           :in $ ?filepath
                           :where [?file :file/path ?filepath]]
                         (db @conn) filepath))
-        note-key (type note->key)]
+        note-key (type note->key)
+        note-id (d/tempid :db.part/user)
+        note-hash (hash (str filepath line-number type))]
     (if (nil? file)
       (throw (IllegalArgumentException.
               (str "Filepath " filepath " is not in the database.")))
-      @(d/transact @conn [{:db/id #db/id[:db.part/user]
+      @(d/transact @conn [{:db/id note-id
                            :note/source note-key
-                           :note/file file
                            :note/line-number line-number
-                           :note/content content}]))))
+                           :note/content content
+                           :note/hash note-hash}
+                          {:db/id file
+                           :file/notes note-id}]))))
 
 (defn get-notes
   "Given either a full filepath, or a user, project, and filename,
@@ -117,10 +130,29 @@
   ([user project]
      (map (partial get-notes) (source-files user project)))
   ([filepath]
-     (map #(d/entity (db @conn) (first %))
-          (q '[:find ?note
+     (map #(d/touch (d/entity (db @conn) (first %)))
+          (q '[:find ?notes
                :in $ ?filepath
                :where
-               [?note :note/file ?file]
-               [?file :file/path ?filepath]]
+               [?file :file/path ?filepath]
+               [?file :file/notes ?notes]]
              (db @conn) filepath))))
+
+(defn remove-note
+  "Retract a note from the database."
+  [filepath line-number content type]
+  (let [file (ffirst (q '[:find ?file
+                          :in $ ?filepath
+                          :where [?file :file/path ?filepath]]
+                        (db @conn) filepath))
+        note-key (type note->key)
+        note (ffirst (q '[:find ?note
+                          :in $ ?file ?line-number ?content ?type
+                          :where
+                          [?note :note/file ?file]
+                          [?note :note/source ?type]
+                          [?note :note/line-number ?line-number]
+                          [?note :note/content ?content]]
+                        (db @conn) file line-number content note-key))]
+    (when-not (nil? file)
+      @(d/transact @conn [[:db.fn/retractEntity note]]))))

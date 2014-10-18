@@ -7,12 +7,6 @@
   :db/doc "The source of a note. Enumerated"
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
-  :db/ident :note/file
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "The file associated with a note."
-  :db.install/_attribute :db.part/db}
- {:db/id #db/id[:db.part/db]
   :db/ident :note/line-number
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
@@ -22,7 +16,8 @@
   :db/ident :note/flag
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "The flag for a comment."
+  :db/isComponent true
+  :db/doc "The flag for a note."
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
   :db/ident :note/content
@@ -34,6 +29,7 @@
   :db/ident :note/comments
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
+  :db/isComponent true
   :db/doc "The comments associated with a note."
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
@@ -41,6 +37,13 @@
   :db/valueType :db.type/long
   :db/cardinality :db.cardinality/one
   :db/doc "The score of a note."
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :note/hash
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "The hash of a note."
   :db.install/_attribute :db.part/db}
 
  ;; comments
@@ -72,6 +75,7 @@
   :db/ident :comment/flag
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
+  :db/isComponent true
   :db/doc "A comment's flag"
   :db.install/_attribute :db.part/db}
 
@@ -106,12 +110,34 @@
   :db/cardinality :db.cardinality/one
   :db/doc "A user's github OAuth access token."
   :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/notes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "The notes created by a user."
+  :db/isComponent true
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/comments
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "The comments created by a user."
+  :db/isComponent true
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/votes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "A user's votes."
+  :db/isComponent true
+  :db.install/_attribute :db.part/db}
 
  ;; votes
  {:db/id #db/id[:db.part/db]
   :db/ident :vote/direction
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
+  :db/isComponent true
   :db/doc "A vote's direction (up or down). Enumerated."
   :db.install/_attribute :db.part/db}
  {:db/id #db/id[:db.part/db]
@@ -167,13 +193,11 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Files in this git repo"
+  :db/isComponent true
   :db.install/_attribute :db.part/db}
- {:db/id #db/id[:db.part/db]
-  :db/ident :file
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "A file"
-  :db.install/_attribute :db.part/db}
+
+
+ ;;; Files
  {:db/id #db/id[:db.part/db]
   :db/ident :file/name
   :db/valueType :db.type/string
@@ -184,7 +208,15 @@
   :db/ident :file/path
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
   :db/doc "Full path to a file"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :file/notes
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Notes associated with this file"
+  :db/isComponent true
   :db.install/_attribute :db.part/db}
 
  ]

@@ -4,8 +4,6 @@
             [clojure.string :as s])
   (:import java.io.File))
 
-(def repo-path "repos")
-
 (defn import-project
   "Given a username and a project name, import it into the database.
 
@@ -18,10 +16,16 @@
 
   TODO: Issue #21. This currently only targets Clojure src files, not
   ClojureScript, or test files."
-  [uri user project]
+  [uri user project repo-path]
   (let [src-folder "src"
         src-path (io/file (s/join File/separator
                                   [repo-path user project src-folder]))
         files (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
                       (file-seq src-path))]
     (db/import-repo uri user project files)))
+
+(defn remove-project
+  "Given a user/org name and a project name, remove relevant entries
+  from the database."
+  [user project]
+  (db/remove-repo user project))

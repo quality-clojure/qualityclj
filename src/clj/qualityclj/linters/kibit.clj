@@ -8,8 +8,6 @@
   (:import java.io.File
            java.io.StringWriter))
 
-(def repo-path "repos")
-
 (defn pprint-code
   "Get the expr in the right format for printing."
   [expr]
@@ -26,12 +24,13 @@
   (let [{:keys [file line expr alt]} check-map
         content (str "Instead of:\n\t" (pprint-code expr) "\nTry:\n\t"
                      (pprint-code alt))]
+    (info "\nAdding note to line " line ":\n" content)
     (db/add-note file line content :kibit)))
 
 (defn kibitize-project
   "Run kibit over the provided project and
   use the reporter for kibit's output."
-  [user project]
+  [user project reporter repo-path]
   (let [src-folder "src"
         src-path (io/file
                   (s/join File/separator [repo-path user project src-folder]))]
@@ -39,4 +38,4 @@
     (doseq [file (filter #(and (.isFile %) (.endsWith (.getPath %) "clj"))
                          (file-seq src-path))]
       (info (.getPath file))
-      (check/check-file (.getPath file) :reporter 'note-reporter))))
+      (check/check-file (.getPath file) :reporter reporter))))
