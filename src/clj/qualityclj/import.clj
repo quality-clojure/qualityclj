@@ -8,6 +8,7 @@
 (def repo-path "repos")
 (def highlight-path "highlight")
 (def src-path "src")
+(def test-path "test")
 
 (defn extract-user-project
   "Given a git URL, extract the user/org name and the project name."
@@ -27,7 +28,8 @@
   [url]
   (let [[user project] (extract-user-project url)]
     (git/import-repo url user project repo-path)
-    (highlight/highlight-project user project src-path repo-path highlight-path)
+    (highlight/highlight-project user project src-path test-path
+                                 repo-path highlight-path)
     (db/import-project url user project repo-path)
     (kibit/kibitize-project user project kibit/note-reporter repo-path)))
 
