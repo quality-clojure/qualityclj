@@ -1,10 +1,10 @@
 (ns qualityclj.util
-  (:require [clojure.string :as string])
-  (:import java.io.File))
+  (:import (java.io File))
+  (:require [clojure.java.io :as io]))
 
-(defn correct-path-separators
+(defn correct-path
   "Make sure a string representing a path has the correct path
   separators. This is only needed for compliance with Windows,
   generally."
   [path]
-  (string/replace path #"[/\\]" File/separator))
+  (.getPath ^File (io/file path)))
