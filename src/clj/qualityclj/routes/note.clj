@@ -14,7 +14,7 @@
   :allowed-methods [:get]
   :available-media-types ["text/json"]
   :exists? (fn [ctx] (db/valid-filepath (util/correct-path-separators
-                                        (:* (:params (:request %))))) )
+                                        (:* (:params (:request ctx))))) )
   :handle-ok #(generate-string (db/get-notes (util/correct-path-separators
                                               (:* (:params (:request %))))))
   :handle-not-found "No such filepath.")
