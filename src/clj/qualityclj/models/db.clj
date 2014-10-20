@@ -1,7 +1,9 @@
 (ns qualityclj.models.db
-  (:require [datomic.api :as d :refer [q db]]
-            [clojure.java.io :as io]
-            [environ.core :refer [env]]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as s]
+            [datomic.api :as d :refer [q db]]
+            [environ.core :refer [env]])
+  (:import java.io.File))
 
 (def uri (env :db-uri))
 (def schema-tx (read-string (slurp (io/resource "data/schema.edn"))))
@@ -19,22 +21,25 @@
 (defn file->entity
   "Given a File, convert it to the appropriate db entity ready to be
   added."
-  [file]
+  [file repo-path]
   (let [file-id (d/tempid :db.part/user)]
     {:db/id file-id
      :file/name (.getName file)
-     :file/path (.getPath file)}))
+     :file/path (s/replace-first (.getPath file)
+                                 (str repo-path File/separator) "")}))
 
 (defn import-repo
   "Import a git repository into the database."
-  [uri user name files]
+  [uri user name files repo-path]
   (let [repo-id (d/tempid :db.part/user)
-        file-adds (mapv file->entity files)]
+        file-adds (mapv #(file->entity % repo-path) files)]
     @(d/transact @conn [{:db/id repo-id
                          :repo/uri uri
                          :repo/name name
                          :repo/username user
-                         :repo/files file-adds}])))
+                         :repo/files file-adds}
+                        {:db/id #db/id[db.part/user]
+                         :repo/path repo-path}])))
 
 (defn get-all-repos
   "Get a list of all repos in the database."
@@ -79,18 +84,14 @@
                             [?files :file/path ?filepath]]
                           (db @conn) repo))))))
 
-(defn get-filepath
-  "Given a user, project, and filename, return the filepath associated
-  with that file."
-  [user project filename]
-  (let [repo (get-repo user project)]
-    (ffirst (q '[:find ?filepath
-                 :in $ ?repo ?filename
-                 :where
-                 [?repo :repo/files ?file]
-                 [?file :file/name ?filename]
-                 [?file :file/path ?filepath]]
-               (db @conn) repo filename))))
+(defn valid-filepath
+  "Checks whether the filepath is known in the database. Returns a
+  boolean."
+  [filepath]
+  (not (empty? (q '[:find ?file
+                    :in $ ?filepath
+                    :where [?file :file/path ?filepath]]
+                  (db @conn) filepath))))
 
 (def note->key
   {:kibit     :note.source/kibit
@@ -98,6 +99,13 @@
    :user      :note.source/user
    :bikeshed  :note.source/bikeshed
    :cloverage :note.source/cloverage})
+
+(defn hash-note
+  "Return what should a db-unique hash for a note.
+
+  NOTE: the note 'type' is the key in the 'note->key' map."
+  [filepath line-number type]
+  (hash (str filepath line-number type)))
 
 (defn add-note
   "Insert a note in the database."
@@ -108,7 +116,7 @@
                         (db @conn) filepath))
         note-key (type note->key)
         note-id (d/tempid :db.part/user)
-        note-hash (hash (str filepath line-number type))]
+        note-hash (hash-note filepath line-number type)]
     (if (nil? file)
       (throw (IllegalArgumentException.
               (str "Filepath " filepath " is not in the database.")))
@@ -120,13 +128,28 @@
                           {:db/id file
                            :file/notes note-id}]))))
 
+(defn add-note-with-repo-path
+  "Hack to support kibit."
+  [filepath line-number content type]
+  (let [repo-path (ffirst (q '[:find ?repo-path :where [_ :repo/path ?repo-path]]
+                             (db @conn)))
+        filepath (s/replace-first filepath (str repo-path File/separator) "")]
+    (add-note filepath line-number content type)))
+
+(defn get-all-notes
+  "Get all notes currently in the database."
+  []
+  (mapv #(d/touch (d/entity (db @conn) (first %)))
+        (q '[:find ?note :where [?note :note/source]] (db @conn))))
+
 (defn get-notes
-  "Given either a full filepath, or a user, project, and filename,
-  return the notes associated with that file. The notes are database
-  entities with keys that correspond to attributes defined in the
-  database schema. See 'resources/data/schema.edn' for details."
-  ([user project filename]
-     (get-notes (get-filepath user project filename)))
+  "Given a filepath, return the notes associated with that file.
+
+  Given a user and project, return all notes associated with the project.
+
+  The notes are database entities with keys that correspond to
+  attributes defined in the database schema. See
+  'resources/data/schema.edn' for details."
   ([user project]
      (map (partial get-notes) (source-files user project)))
   ([filepath]
@@ -140,19 +163,12 @@
 
 (defn remove-note
   "Retract a note from the database."
-  [filepath line-number content type]
-  (let [file (ffirst (q '[:find ?file
-                          :in $ ?filepath
-                          :where [?file :file/path ?filepath]]
-                        (db @conn) filepath))
-        note-key (type note->key)
+  [filepath line-number type]
+  (let [note-hash (hash-note filepath line-number type)
         note (ffirst (q '[:find ?note
-                          :in $ ?file ?line-number ?content ?type
+                          :in $ ?hash
                           :where
-                          [?note :note/file ?file]
-                          [?note :note/source ?type]
-                          [?note :note/line-number ?line-number]
-                          [?note :note/content ?content]]
-                        (db @conn) file line-number content note-key))]
-    (when-not (nil? file)
+                          [?note :note/hash ?hash]]
+                        (db @conn) note-hash))]
+    (when-not (nil? note)
       @(d/transact @conn [[:db.fn/retractEntity note]]))))

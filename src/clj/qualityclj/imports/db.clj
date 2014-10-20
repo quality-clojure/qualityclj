@@ -24,7 +24,7 @@
                             (or (.endsWith (.getPath %) "clj")
                                 (.endsWith (.getPath %) "cljs")))
                       (file-seq src-path))]
-    (db/import-repo uri user project files)))
+    (db/import-repo uri user project files repo-path)))
 
 (defn remove-project
   "Given a user/org name and a project name, remove relevant entries
