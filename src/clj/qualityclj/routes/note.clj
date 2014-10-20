@@ -1,5 +1,6 @@
 (ns qualityclj.routes.note
   (:require [qualityclj.models.db :as db]
+            [qualityclj.util :as util]
             [cheshire.core :refer [generate-string]]
             [liberator.core :refer [defresource]]
             [compojure.core :refer [defroutes ANY context]]))
@@ -12,8 +13,10 @@
 (defresource note []
   :allowed-methods [:get]
   :available-media-types ["text/json"]
-  :exists? #(db/valid-filepath (:* (:params (:request %))))
-  :handle-ok #(generate-string (db/get-notes (:* (:params (:request %)))))
+  :exists? (fn [ctx] (db/valid-filepath (util/correct-path-separators
+                                        (:* (:params (:request %))))) )
+  :handle-ok #(generate-string (db/get-notes (util/correct-path-separators
+                                              (:* (:params (:request %))))))
   :handle-not-found "No such filepath.")
 
 (defroutes note-routes
