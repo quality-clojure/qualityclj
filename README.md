@@ -72,6 +72,9 @@ The plan is to use [clojure.test] once we have a core not in constant flux.
 If you are contributing, please make sure that there are tests to cover any new
 functionality introduced, or bugs fixed.
 
+The ClojureScript tests require `phantomjs` to be on your classpath. Downloads can be found on the 
+[homepage][phantomjs].
+
 ### Logging
 
 We are using [Timbre] for logging.
@@ -121,3 +124,4 @@ Copyright © 2014 Chris Sims and Scott Bauer
 [Bikeshed]: https://github.com/dakrone/lein-bikeshed
 [Quality Clojure]: https://github.com/quality-clojure/qualityclj
 [Issues]: https://github.com/jcsims/qualityclj/issues
+[phantomjs]: http://phantomjs.org/
