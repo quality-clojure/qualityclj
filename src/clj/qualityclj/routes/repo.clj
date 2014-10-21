@@ -8,7 +8,6 @@
             [hiccup.element :refer [link-to]])
   (:import java.io.File))
 
-(def repo-path "repos")
 (def highlight-path "highlight")
 
 (defn list-repos
@@ -32,19 +31,20 @@
       (if (empty? files)
         [:p "No such repository."]
         [:ul#files
-         (for [file (map #(string/replace-first % repo-path "") files)]
-           [:li.file (link-to (str "/repo" file ".html") file)])])])))
+         (for [file files]
+           [:li.file (link-to (str "/repo/" file ".html") file)])])])))
 
 (defn serve-file
   "Given a filepath, serve the highlighted file."
   [filepath]
-  (let [highlight-filepath (str highlight-path File/separator  filepath)
+  (let [highlight-filepath (str highlight-path File/separator filepath)
         file (io/file highlight-filepath)]
     (if (.exists file)
       (layout/common
        [:div.container-fluid
-        [:h2 (string/replace-first filepath repo-path "")]
-        [:div (slurp file)]])
+        [:h2#filepath (string/replace filepath #"\.html$" "")]
+        [:div (slurp file)]
+        [:div#notes]])
       (route/not-found (str "No such file: " file)))))
 
 (defroutes repo-routes

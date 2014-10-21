@@ -6,93 +6,50 @@
             [weasel.repl :as weasel]
             [om-bootstrap.button :as b]
             [om-bootstrap.grid :as g]
-            [om-bootstrap.random :as r]))
+            [om-bootstrap.random :as r]
+            [ajax.core :refer [GET]]))
 
-(def app-state
-  (atom {:repo {:name "cljagents"
-                :url "https://github.com/jcsims/cljagents"
-                :file {:filename "prob5.clj"
-                       :filepath "src/clj/cljagents"
-                       :language "Clojure"
-                       :notes [{:line 135
-                                :type :note
-                                :source :kibit
-                                :content (str "Consider using: `(+ % 105 "
-                                              "(rand-int 150)` instead.")}
-                               {:line 5
-                                :type :note
-                                :source :eastwood
-                                :content (str "Unlimited use of "
-                                              "([cljagents.agent] "
-                                              "[clojure.core.logic]) in "
-                                              "cljagents.prob5")}
-                               {:line 35
-                                :type :note
-                                :source :bikeshed
-                                :content "Needs a docstring."}
-                               {:line 53
-                                :type :note
-                                :source :bikeshed
-                                :content "Needs a docstring."}
-                               {:line 70
-                                :type :note
-                                :source :bikeshed
-                                :content "Needs a docstring."}
-                               {:line 79
-                                :type :note
-                                :source :bikeshed
-                                :content "Needs a docstring."}
-                               {:line 12
-                                :type :comment
-                                :content (str "Consider refactoring to pass "
-                                              "state instead of using global "
-                                              "atoms.")}]}}}))
+(def app-state (atom {}))
 
-(defn note-source [{:keys [source]}]
-  (get {:kibit "Kibit"
-        :eastwood "Eastwood"
-        :bikeshed "Bikeshed"} source))
+(defn update-state
+  "Handler for ajax responses."
+  [response]
+  (reset! app-state {:notes response}))
+
+(defn note-source [source]
+  (get {"note.source/kibit" "Kibit"
+        "note.source/eastwood" "Eastwood"
+        "note.source/bikeshed" "Bikeshed"} source))
 
 (defn note-title [note]
-  (let [type (:type note)
-        prefix (get {:note "Note" 
-                     :comment "Comment"} type)]
-    (if (= type :comment)
-      prefix
-      (str prefix " - " (note-source note)))))
+  (str "Note - " (note-source (:note/source note))))
 
 ;; This is obviously a bit hacky:
 ;; font-size is 13px, line-height is 1.42857,
 ;; and the -50 offset is to make sure the arrow is a the right line,
 ;; instead of the top of the popover
 (defn note-position [line]
-  (int (- (* 13 line 1.38) 45)))
+  (int (+ 100 (* 13 line 1.38))))
 
 (defcomponent note [note owner]
   (render [_]
           (r/popover {:placement "right"
-                      :position-top (note-position (:line note))
+                      :position-top (note-position (:note/line-number note))
+                      :position-left 700
                       :title (note-title note)}
-                     (:content note))))
+                     (:note/content note))))
 
 (defcomponent notes [app owner]
   (render [_]
           (d/div (om/build-all note
-                               (get-in app [:repo :file :notes])))))
+                               (get-in app [:notes])))))
 
-(defcomponent file-header [app owner]
-  (render [_]
-          (g/row
-           {}
-           (g/col {:xs 12}
-                  (d/h3 (get-in app [:repo :name])
-                        (d/small (str " | " (get-in app [:repo :file :filename]))))))))
-
-(let [elem (. js/document (getElementById "file-header"))]
-  (when elem (om/root file-header app-state {:target elem})))
-
-(let [elem (. js/document (getElementById "notes"))]
-  (when elem (om/root notes app-state {:target elem})))
+(when-let [elem (. js/document (getElementById "notes"))]
+  (GET (str "/note/" (.. js/document (getElementById "filepath") -innerHTML))
+      {:handler update-state
+       :response-format :json
+       :keywords? true})
+  (om/root notes app-state {:target elem}))
 
 (def is-dev (.contains (.. js/document -body -classList) "is-dev"))
 

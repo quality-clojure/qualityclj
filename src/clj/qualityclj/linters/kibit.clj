@@ -25,7 +25,7 @@
         content (str "Instead of:\n\t" (pprint-code expr) "\nTry:\n\t"
                      (pprint-code alt))]
     (info "\nAdding note to line " line ":\n" content)
-    (db/add-note file line content :kibit)))
+    (db/add-note-with-repo-path file line content :kibit)))
 
 (defn kibitize-project
   "Run kibit over the provided project and

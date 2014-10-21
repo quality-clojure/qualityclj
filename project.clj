@@ -25,7 +25,9 @@
                  [com.taoensso/timbre "3.3.1"]
                  [lein-kibit "0.0.8"]
                  [org.clojars.jcsims/codeq "0.1.0"]
-                 [lib-noir "0.9.3"]]
+                 [lib-noir "0.9.3"]
+                 [liberator "0.12.2"]
+                 [cljs-ajax "0.3.3"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
