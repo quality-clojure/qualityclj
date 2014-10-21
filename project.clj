@@ -2,8 +2,8 @@
   :description "FIXME: write description"
   :url "https://github.com/quality-clojure/qualityclj"
 
-  :source-paths ["src/clj" "src/cljs"]
-  :test-paths ["test/clj" "test/cljs"]
+  :source-paths ["src/clj"]
+  :test-paths ["test/clj"]
   :resource-paths ["resources"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
@@ -27,11 +27,13 @@
                  [org.clojars.jcsims/codeq "0.1.0"]
                  [lib-noir "0.9.3"]
                  [liberator "0.12.2"]
-                 [cljs-ajax "0.3.3"]]
+                 [cljs-ajax "0.3.3"]
+                 [com.cemerick/clojurescript.test "0.3.1"]]
 
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
-            [lein-environ "1.0.0"]]
+            [lein-environ "1.0.0"]
+            [com.cemerick/clojurescript.test "0.3.1"]]
 
   :ring {:handler qualityclj.handler/app
          :init qualityclj.handler/init
@@ -39,14 +41,23 @@
 
   :hooks [leiningen.cljsbuild]
 
-  :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
+  :cljsbuild {:test-commands {"test" ["phantomjs"
+                                      :runner "resources/private/js/polyfill.js"
+                                      "resources/private/js/test.js"]}
+              :builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
                                         :source-map    "resources/public/js/out.js.map"
                                         :preamble      ["react/react.min.js"]
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
-                                        :pretty-print  true}}}}
+                                        :pretty-print  true}}
+                       :test {:source-paths ["src/cljs" "test/cljs"]
+                              :compiler {:preamble      ["react/react.min.js"]
+                                         :output-to     "resources/private/js/test.js"
+                                         :externs       ["react/externs/react.js"]
+                                         :optimizations :simple
+                                         :pretty-print true}}}}
 
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
@@ -62,7 +73,7 @@
                          :db-uri "datomic:mem://qualityclj"}
                    :dependencies [[ring-mock "0.1.5"]
                                   [ring/ring-devel "1.3.1"]]}
-             
+
              :test {:env {:db-uri "datomic:mem://qualityclj"}}
 
              :uberjar {:hooks [leiningen.cljsbuild]
