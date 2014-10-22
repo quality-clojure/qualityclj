@@ -73,7 +73,7 @@ The plan is to use [clojure.test] once we have a core not in constant flux.
 If you are contributing, please make sure that there are tests to cover any new
 functionality introduced, or bugs fixed.
 
-The ClojureScript tests require `phantomjs` to be on your classpath. Downloads can be found on the 
+The ClojureScript tests require `phantomjs` to be on your PATH. Downloads can be found on the 
 [homepage][phantomjs].
 
 ### Logging
