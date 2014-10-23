@@ -28,7 +28,7 @@ You will need:
 
 First, create a production uberjar from the command line:
 
-    lein with-profile production uberjar
+    lein with-profile production ring uberjar
 
 Place the resulting uberjar where you want [Quality Clojure] to run.
 
