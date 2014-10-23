@@ -19,10 +19,10 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.1"]
                  [com.datomic/datomic-free "0.9.4899"]
-                 [clj-jgit "0.7.6" :exclusions [org.clojure/core.memoize]]
+                 [clj-jgit "0.8.0"]
                  [com.taoensso/timbre "3.3.1"]
                  [lein-kibit "0.0.8"]
-                 [lib-noir "0.9.3"]
+                 [lib-noir "0.9.4"]
                  [liberator "0.12.2"]
                  [cljs-ajax "0.3.3"]]
 
