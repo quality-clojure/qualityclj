@@ -27,8 +27,11 @@
   (reset! app-state {:notes response})
   (doseq [anote (:notes @app-state)]
     (let [elem (. js/document (getElementById
-                               (str "line-" (:note/line-number anote))))]
-      (reagent/render-component (note-bubble anote) elem))))
+                               (str "line-" (:note/line-number anote))))
+          new-span (.createElement js/document "span")
+          p-elem (.-parentNode elem)]
+      (.insertBefore p-elem new-span elem)
+      (reagent/render-component (note-bubble anote) new-span))))
 
 (when-let [elem (. js/document (getElementById "filepath"))]
   (GET (str "/note/" (.-innerHTML elem))
