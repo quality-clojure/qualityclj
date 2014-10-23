@@ -15,7 +15,7 @@
   (str "Note - " (note-source (:note/source note))))
 
 (defn note-bubble [note]
-  [:div.panel.panel-default.note-bubble
+  [:div.panel.panel-info.note-bubble
    [:div.panel-heading
     [:h3.panel-title (note-title note)]]
    [:div.panel-body
@@ -27,10 +27,9 @@
   (reset! app-state {:notes response})
   (doseq [anote (:notes @app-state)]
     (let [elem (. js/document (getElementById
-                               (str "line-" (:note/line-number anote))))
-          new-span (.createElement js/document "span")
-          p-elem (.-parentNode elem)]
-      (.insertBefore p-elem new-span elem)
+                               (str "line-" (dec (:note/line-number anote)))))
+          new-span (.createElement js/document "span")]
+      (.appendChild elem new-span)
       (reagent/render-component (note-bubble anote) new-span))))
 
 (when-let [elem (. js/document (getElementById "filepath"))]

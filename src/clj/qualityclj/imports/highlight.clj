@@ -4,26 +4,14 @@
             [clojure.string :as s])
   (:import java.io.File))
 
-(defn add-line-classes
-  "Given a filepath, add appropriate line ids to the first span of
-  each line of highlighted code. Each id takes the form
-  \"line-<num>\"."
-  [filepath]
-  (let [lines (line-seq (io/reader filepath))
-        id-lines (map #(s/replace-first %1 #"<span "
-                                        (str "<span id=\"line-" (inc %2) "\" "))
-                      lines (range))]
-    (spit filepath (s/join "\n" id-lines))))
-
 (defn highlight
   "Produce an HTML file from a given source file. Takes a full path to
   the original source file as well as an output file path."
   [filename outname]
-  (let [result (sh "pygmentize" "-f" "html"
+  (let [result (sh "pygmentize" "-f" "html" "-O" "linespans=line"
                    "-l" "clojure" "-o" outname filename)]
     (if-not (= 0 (:exit result))
-      (throw (Exception. (str "Error with highlighting: " (:err result))))
-      (add-line-classes outname))))
+      (throw (Exception. (str "Error with highlighting: " (:err result)))))))
 
 (defn highlight-directory
   "Given a path to a directory, highlight everything in the directory
