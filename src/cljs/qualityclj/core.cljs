@@ -1,20 +1,10 @@
 (ns qualityclj.core
   (:require [figwheel.client :as figwheel :include-macros true]
-            [om.core :as om :include-macros true]
-            [om-tools.core :refer-macros [defcomponent]]
-            [om-tools.dom :as d :include-macros true]
+            [reagent.core :as reagent :refer [atom]]
             [weasel.repl :as weasel]
-            [om-bootstrap.button :as b]
-            [om-bootstrap.grid :as g]
-            [om-bootstrap.random :as r]
             [ajax.core :refer [GET]]))
 
 (def app-state (atom {}))
-
-(defn update-state
-  "Handler for ajax responses."
-  [response]
-  (reset! app-state {:notes response}))
 
 (defn note-source [source]
   (get {"note.source/kibit" "Kibit"
@@ -24,32 +14,29 @@
 (defn note-title [note]
   (str "Note - " (note-source (:note/source note))))
 
-;; This is obviously a bit hacky:
-;; font-size is 13px, line-height is 1.42857,
-;; and the -50 offset is to make sure the arrow is a the right line,
-;; instead of the top of the popover
-(defn note-position [line]
-  (int (+ 100 (* 13 line 1.38))))
+(defn note-bubble [note]
+  [:div.panel.panel-info.note-bubble
+   [:div.panel-heading
+    [:h3.panel-title (note-title note)]]
+   [:div.panel-body
+    (:note/content note)]])
 
-(defcomponent note [note owner]
-  (render [_]
-          (r/popover {:placement "right"
-                      :position-top (note-position (:note/line-number note))
-                      :position-left 700
-                      :title (note-title note)}
-                     (:note/content note))))
+(defn handle-notes
+  "Handler for ajax responses."
+  [response]
+  (reset! app-state {:notes response})
+  (doseq [anote (:notes @app-state)]
+    (let [elem (. js/document (getElementById
+                               (str "line-" (dec (:note/line-number anote)))))
+          new-span (.createElement js/document "span")]
+      (.appendChild elem new-span)
+      (reagent/render-component (note-bubble anote) new-span))))
 
-(defcomponent notes [app owner]
-  (render [_]
-          (d/div (om/build-all note
-                               (get-in app [:notes])))))
-
-(when-let [elem (. js/document (getElementById "notes"))]
-  (GET (str "/note/" (.. js/document (getElementById "filepath") -innerHTML))
-      {:handler update-state
+(when-let [elem (. js/document (getElementById "filepath"))]
+  (GET (str "/note/" (.-innerHTML elem))
+      {:handler handle-notes
        :response-format :json
-       :keywords? true})
-  (om/root notes app-state {:target elem}))
+       :keywords? true}))
 
 (def is-dev (.contains (.. js/document -body -classList) "is-dev"))
 

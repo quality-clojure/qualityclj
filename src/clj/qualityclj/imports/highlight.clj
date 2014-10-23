@@ -8,9 +8,9 @@
   "Produce an HTML file from a given source file. Takes a full path to
   the original source file as well as an output file path."
   [filename outname]
-  (let [result (sh "pygmentize" "-f" "html" "-O" "linenos=1"
+  (let [result (sh "pygmentize" "-f" "html" "-O" "linespans=line"
                    "-l" "clojure" "-o" outname filename)]
-    (when-not (= 0 (:exit result))
+    (if-not (= 0 (:exit result))
       (throw (Exception. (str "Error with highlighting: " (:err result)))))))
 
 (defn highlight-directory

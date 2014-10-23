@@ -1,1 +1,4 @@
-
+.panel-body {
+    padding: 0px;
+    padding-left: 15px;
+}
