@@ -1,5 +1,5 @@
 (defproject qualityclj "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+  :description "Assess Clojure libraries based on a number of different metrics."
   :url "https://github.com/quality-clojure/qualityclj"
 
   :source-paths ["src/clj"]
