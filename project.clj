@@ -8,32 +8,28 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"]
-                 [ring "1.3.1"]
+                 [http-kit "2.1.18"]
                  [compojure "1.2.0"]
                  [ring/ring-defaults "0.1.2"]
                  [hiccup "1.0.5"]
-                 [ring-server "0.3.1"]
                  [reagent "0.4.2"]
                  [figwheel "0.1.5-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.1"]
                  [com.datomic/datomic-free "0.9.4899"]
-                 [clj-jgit "0.8.0"]
+                 [clj-jgit "0.8.0" :exclusions [org.clojure/core.memoize]]
                  [com.taoensso/timbre "3.3.1"]
                  [lein-kibit "0.0.8"]
                  [lib-noir "0.9.4"]
                  [liberator "0.12.2"]
                  [cljs-ajax "0.3.3"]]
 
-  :plugins [[lein-ring "0.8.12"]
-            [lein-cljsbuild "1.0.3"]
+  :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
             [com.cemerick/clojurescript.test "0.3.1"]]
 
-  :ring {:handler qualityclj.handler/app
-         :init qualityclj.handler/init
-         :destroy qualityclj.handler/destroy}
+  :main qualityclj.handler
 
   :hooks [leiningen.cljsbuild]
 
@@ -77,7 +73,7 @@
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
                        :omit-source true
-                       :aot :all
+                       ;;:aot :all
                        :cljsbuild {:builds
                                    {:app
                                     {:compiler
