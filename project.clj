@@ -73,7 +73,7 @@
              :uberjar {:hooks [leiningen.cljsbuild]
                        :env {:production true}
                        :omit-source true
-                       ;;:aot :all
+                       :aot [qualityclj.handler]
                        :cljsbuild {:builds
                                    {:app
                                     {:compiler
