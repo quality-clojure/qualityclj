@@ -1,11 +1,11 @@
 (ns qualityclj.repl
   (:require [cemerick.piggieback :as piggieback]
-            [hiccup.core :as html]
             [weasel.repl.websocket :as weasel]
-            [taoensso.timbre :as timbre :refer [info spy]])
-  (:use qualityclj.handler
-        [ring.middleware file-info file]
-        ring.server.standalone))
+            [taoensso.timbre :as timbre :refer [info spy]]
+            [qualityclj.handler :refer [app init]]
+            [org.httpkit.server :refer [run-server]]
+            [ring.middleware.file-info :refer [wrap-file-info]]
+            [ring.middleware.file :refer [wrap-file]] ))
 
 (defonce server (atom nil))
 
@@ -27,15 +27,10 @@
   "used for starting the server in development mode from REPL"
   [& [port]]
   (let [port (if port (Integer/parseInt port) 8080)]
-    (reset! server
-            (serve (get-handler)
-                   {:port port
-                    :init init
-                    :auto-reload? true
-                    :destroy destroy
-                    :join true}))
-    (info "Server started. View the site at http://localhost:" port)))
+    (init)
+    (reset! server (run-server (get-handler) {:port port}))
+    (info (str "Server started. View the site at http://localhost:" port))))
 
 (defn stop-server []
-  (.stop @server)
-  (spy :info "Server stopping." (reset! server nil)))
+  (spy :info "Server stopping." (@server :timeout 100))
+  (reset! server nil))

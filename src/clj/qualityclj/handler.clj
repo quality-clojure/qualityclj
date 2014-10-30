@@ -7,12 +7,12 @@
             [compojure.route :as route]
             [hiccup.middleware :refer [wrap-base-url]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults
-                                              api-defaults]]))
+                                              api-defaults]]
+            [org.httpkit.server :refer [run-server]])
+  (:gen-class))
 
 (defn init []
   (db/ensure-db))
-
-(defn destroy [])
 
 (defroutes app-routes
   (route/resources "/")
@@ -32,3 +32,10 @@
     (-> (routes api-routes site-routes)
         (wrap-defaults api-defaults)
         (wrap-base-url))))
+
+(defn -main
+  "Starts the server, ensuring that the database has been properly
+  initialized. Starts on port 8090."
+  [& args]
+  (init)
+  (run-server app {}))
