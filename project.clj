@@ -36,20 +36,21 @@
   :cljsbuild {:test-commands {"test" ["phantomjs"
                                       :runner "resources/private/js/polyfill.js"
                                       "resources/private/js/test.js"]}
-              :builds {:app {:source-paths ["src/cljs"]
-                             :compiler {:output-to     "resources/public/js/app.js"
-                                        :output-dir    "resources/public/js/out"
-                                        :source-map    "resources/public/js/out.js.map"
-                                        :preamble      ["reagent/react.min.js"]
-                                        :externs       ["reagent/externs/react.js"]
-                                        :optimizations :none
-                                        :pretty-print  true}}
-                       :test {:source-paths ["src/cljs" "test/cljs"]
-                              :compiler {:preamble      ["reagent/react.js"]
-                                         :output-to     "resources/private/js/test.js"
-                                         :externs       ["reagent/externs/react.js"]
-                                         :optimizations :simple
-                                         :pretty-print true}}}}
+              :builds
+              {:app {:source-paths ["src/cljs"]
+                     :compiler {:output-to     "resources/public/js/app.js"
+                                :output-dir    "resources/public/js/out"
+                                :source-map    "resources/public/js/out.js.map"
+                                :preamble      ["reagent/react.min.js"]
+                                :externs       ["reagent/externs/react.js"]
+                                :optimizations :none
+                                :pretty-print  true}}
+               :test {:source-paths ["src/cljs" "test/cljs"]
+                      :compiler {:preamble      ["reagent/react.js"]
+                                 :output-to     "resources/private/js/test.js"
+                                 :externs       ["reagent/externs/react.js"]
+                                 :optimizations :simple
+                                 :pretty-print true}}}}
 
   :profiles {:production {:ring {:open-browser? false
                                  :stacktraces? false
