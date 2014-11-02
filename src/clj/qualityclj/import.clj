@@ -31,7 +31,7 @@
     (highlight/highlight-project user project src-path test-path
                                  repo-path highlight-path)
     (db/import-project url user project repo-path)
-    (kibit/kibitize-project user project kibit/note-reporter repo-path)))
+    (kibit/kibitize-project user project repo-path)))
 
 (defn remove-project
   "Given a user/org name and a project name, remove all traces of the

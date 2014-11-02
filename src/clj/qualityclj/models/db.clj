@@ -37,9 +37,7 @@
                          :repo/uri uri
                          :repo/name name
                          :repo/username user
-                         :repo/files file-adds}
-                        {:db/id #db/id[db.part/user]
-                         :repo/path repo-path}])))
+                         :repo/files file-adds}])))
 
 (defn get-all-repos
   "Get a list of all repos in the database."
@@ -127,14 +125,6 @@
                            :note/hash note-hash}
                           {:db/id file
                            :file/notes note-id}]))))
-
-(defn add-note-with-repo-path
-  "Hack to support kibit."
-  [filepath line-number content type]
-  (let [repo-path (ffirst (q '[:find ?repo-path :where [_ :repo/path ?repo-path]]
-                             (db @conn)))
-        filepath (s/replace-first filepath (str repo-path File/separator) "")]
-    (add-note filepath line-number content type)))
 
 (defn get-all-notes
   "Get all notes currently in the database."
