@@ -8,21 +8,25 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2371"]
-                 [http-kit "2.1.18"]
-                 [compojure "1.2.0"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [http-kit "2.1.19"]
+                 [compojure "1.2.1"]
                  [ring/ring-defaults "0.1.2"]
                  [hiccup "1.0.5"]
-                 [reagent "0.4.2"]
+                 [reagent "0.4.3"]
                  [figwheel "0.1.5-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
-                 [weasel "0.4.1"]
                  [com.datomic/datomic-free "0.9.4899"]
+                 [weasel "0.4.2"]
                  [clj-jgit "0.8.0" :exclusions [org.clojure/core.memoize]]
-                 [com.taoensso/timbre "3.3.1"]
-                 [lib-noir "0.9.4"]
                  [liberator "0.12.2"]
-                 [cljs-ajax "0.3.3"]]
+                 [cheshire "5.3.1"]
+                 [cljs-ajax "0.3.3"]
+                 [prismatic/dommy "1.0.0"]
+                 [com.taoensso/timbre "3.3.1"]
+                 [com.taoensso/encore "1.14.0"]
+                 [com.taoensso/sente "1.2.0"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
@@ -60,14 +64,12 @@
                                         {:optimizations :advanced
                                          :pretty-print false}}}}}
              :dev {:repl-options {:init-ns qualityclj.repl}
-                   :plugins [[lein-figwheel "0.1.4-SNAPSHOT"]]
+                   :plugins [[lein-figwheel "0.1.5-SNAPSHOT"]]
                    :env {:is-dev true
                          :db-uri "datomic:mem://qualityclj"}
-                   :dependencies [[ring-mock "0.1.5"]
-                                  [ring/ring-devel "1.3.1"]
-                                  [com.cemerick/clojurescript.test "0.3.1"]]}
+                   :dependencies [[com.cemerick/clojurescript.test "0.3.1"]]}
 
-             :test {:env {:db-uri "datomic:mem://qualityclj"}
+             :test {:env {:db-uri "datomic:mem://qualityclj-test"}
                     :dependencies [[com.cemerick/clojurescript.test "0.3.1"]]}
 
              :uberjar {:hooks [leiningen.cljsbuild]

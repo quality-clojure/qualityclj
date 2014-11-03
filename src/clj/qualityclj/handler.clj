@@ -1,14 +1,15 @@
 (ns qualityclj.handler
   (:require [qualityclj.models.db :as db]
             [qualityclj.routes.home :refer [home-routes]]
+            [qualityclj.routes.import :refer [import-routes]]
             [qualityclj.routes.note :refer [note-routes]]
             [qualityclj.routes.repo :refer [repo-routes]]
             [compojure.core :refer [defroutes routes]]
             [compojure.route :as route]
             [hiccup.middleware :refer [wrap-base-url]]
+            [org.httpkit.server :refer [run-server]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults
-                                              api-defaults]]
-            [org.httpkit.server :refer [run-server]])
+                                              api-defaults]])
   (:gen-class))
 
 (defn init []
@@ -27,7 +28,10 @@
                    (dissoc [:params :urlencoded])
                    (dissoc [:params :keywordize]))
         api-routes (routes note-routes)
-        site-routes (-> (routes home-routes repo-routes app-routes)
+        site-routes (-> (routes import-routes
+                                home-routes
+                                repo-routes
+                                app-routes)
                         (wrap-defaults config))]
     (-> (routes api-routes site-routes)
         (wrap-defaults api-defaults)
