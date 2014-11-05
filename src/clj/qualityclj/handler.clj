@@ -12,8 +12,10 @@
                                               api-defaults]])
   (:gen-class))
 
-(defn init []
-  (db/ensure-db))
+(defn init [uri]
+  (if (nil? uri)
+    (db/ensure-db)
+    (db/ensure-db uri)))
 
 (defroutes app-routes
   (route/resources "/")
@@ -41,5 +43,5 @@
   "Starts the server, ensuring that the database has been properly
   initialized. Starts on port 8090."
   [& args]
-  (init)
+  (init (first args))
   (run-server app {}))

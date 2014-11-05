@@ -5,18 +5,19 @@
             [environ.core :refer [env]])
   (:import java.io.File))
 
-(def uri (env :db-uri))
 (def schema-tx (read-string (slurp (io/resource "data/schema.edn"))))
 (def fixtures (read-string (slurp (io/resource "data/initial.edn"))))
 
 (defonce conn (atom nil))
 
-(defn ensure-db []
-  (let [new? (d/create-database uri)]
-    (reset! conn (d/connect uri))
-    (when new?
-      @(d/transact @conn schema-tx)
-      @(d/transact @conn fixtures))))
+(defn ensure-db
+  ([] (ensure-db (:db-uri env)))
+  ([uri]
+     (let [new? (d/create-database uri)]
+       (reset! conn (d/connect uri))
+       (when new?
+         @(d/transact @conn schema-tx)
+         @(d/transact @conn fixtures)))))
 
 (defn file->entity
   "Given a File, convert it to the appropriate db entity ready to be
