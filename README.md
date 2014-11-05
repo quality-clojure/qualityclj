@@ -40,7 +40,7 @@ Finally, run the jar. Make sure to pass in the URI for the production database:
 
     java -jar standalone.jar datomic:free://localhost:4334/<db-name>
 
-With any luck, everything should be up, running correctly, and viewable from http://localhost:3000/.
+With any luck, everything should be up, running correctly, and viewable from http://localhost:8090/.
 
 ## Development
 
