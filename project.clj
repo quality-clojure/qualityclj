@@ -55,15 +55,7 @@
                                  :optimizations :simple
                                  :pretty-print true}}}}
 
-  :profiles {:production {:ring {:open-browser? false
-                                 :stacktraces? false
-                                 :auto-reload? false}
-                          :cljsbuild {:builds
-                                      {:app
-                                       {:compiler
-                                        {:optimizations :advanced
-                                         :pretty-print false}}}}}
-             :dev {:repl-options {:init-ns qualityclj.repl}
+  :profiles {:dev {:repl-options {:init-ns qualityclj.repl}
                    :plugins [[lein-figwheel "0.1.5-SNAPSHOT"]]
                    :env {:is-dev true
                          :db-uri "datomic:mem://qualityclj"}
