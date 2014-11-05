@@ -1,4 +1,4 @@
-(ns qualityclj.routes.home_test
-  (:require [qualityclj.routes.home :as home])
-  (:use clojure.test))
-
+(ns qualityclj.routes.home-test
+  (:require [qualityclj.models.db :as db])
+  (:use qualityclj.routes.home
+        clojure.test))
