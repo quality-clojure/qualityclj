@@ -72,9 +72,7 @@
              :test {:env {:db-uri "datomic:mem://qualityclj-test"}
                     :dependencies [[com.cemerick/clojurescript.test "0.3.1"]]}
 
-             :uberjar {:hooks [leiningen.cljsbuild]
-                       :env {:production true}
-                       :omit-source true
+             :uberjar {:omit-source true
                        :aot [qualityclj.handler]
                        :cljsbuild {:builds
                                    {:app
