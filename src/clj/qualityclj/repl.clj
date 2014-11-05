@@ -1,11 +1,12 @@
 (ns qualityclj.repl
-  (:require [cemerick.piggieback :as piggieback]
-            [weasel.repl.websocket :as weasel]
-            [taoensso.timbre :as timbre :refer [info spy]]
-            [qualityclj.handler :refer [app init]]
+  (:require [qualityclj.handler :refer [app init]]
+            [cemerick.piggieback :as piggieback]
+            [environ.core :refer [env]]
             [org.httpkit.server :refer [run-server]]
             [ring.middleware.file-info :refer [wrap-file-info]]
-            [ring.middleware.file :refer [wrap-file]] ))
+            [ring.middleware.file :refer [wrap-file]]
+            [taoensso.timbre :as timbre :refer [info spy]]
+            [weasel.repl.websocket :as weasel]))
 
 (defonce server (atom nil))
 
@@ -27,7 +28,7 @@
   "used for starting the server in development mode from REPL"
   [& [port]]
   (let [port (if port (Integer/parseInt port) 8080)]
-    (init)
+    (init (env :db-uri))
     (reset! server (run-server (get-handler) {:port port}))
     (info (str "Server started. View the site at http://localhost:" port))))
 
