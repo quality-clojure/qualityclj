@@ -28,7 +28,7 @@ You will need:
 
 First, create a production uberjar from the command line:
 
-    lein with-profile production ring uberjar
+    lein uberjar
 
 Place the resulting uberjar where you want [Quality Clojure] to run.
 
@@ -38,7 +38,7 @@ In the root of your Datomic directory, start the Datomic transactor (you did rem
 
 Finally, run the jar. Make sure to pass in the URI for the production database:
 
-    java -Ddb.url=datomic:free://localhost:4334/<db-name> -jar standalone.jar
+    java -jar standalone.jar datomic:free://localhost:4334/<db-name>
 
 With any luck, everything should be up, running correctly, and viewable from http://localhost:3000/.
 
