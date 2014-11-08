@@ -3,6 +3,7 @@
             [qualityclj.imports.git :as git]
             [qualityclj.imports.highlight :as highlight]
             [qualityclj.linters.kibit :as kibit]
+            [qualityclj.linters.conrad :as conrad-linter]
             [clojure.core.async :refer [<! >!  go  go-loop chan]]
             [clojure.string :as s]))
 
@@ -58,9 +59,12 @@
         (highlight/highlight-project user project src-path test-path
                                      repo-path highlight-path)
         (send-status "Highlighting complete, now adding to database." :info)
-        (db/import-project url user project repo-path)
-        (send-status "Project imported to database, now linting." :info)
-        (kibit/kibitize-project user project repo-path))
+        (db/import-project url user project src-path test-path repo-path)
+        (send-status "Project imported to database, now linting with kibit."
+                     :info)
+        (kibit/kibitize-project user project repo-path)
+        (send-status "Kibit run complete, now linting with conrad." :info)
+        (conrad-linter/check-project user project src-path test-path repo-path))
       (>! out-chan {:id :import/status
                     :message "Import complete!"
                     :type :success})

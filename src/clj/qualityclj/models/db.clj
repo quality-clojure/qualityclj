@@ -96,7 +96,7 @@
   {:kibit     :note.source/kibit
    :eastwood  :note.source/eastwood
    :user      :note.source/user
-   :bikeshed  :note.source/bikeshed
+   :conrad    :note.source/conrad
    :cloverage :note.source/cloverage})
 
 (defn hash-note

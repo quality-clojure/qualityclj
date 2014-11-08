@@ -39,8 +39,8 @@
   ;; This could be faster (the JVM startup is several seconds), with a
   ;; 'which' for *nixes or something like 'gcm' for windows, but this
   ;; check should be universal.
-  (if (= 0 (:exit (sh "lein")))
-    (parse-kibit-output (:out (sh "lein" "kibit"
-                                  :dir (s/join File/separator
-                                               [repo-path user project])))
-                        repo-path)))
+  (parse-kibit-output (:out (sh "lein" "kibit"
+                                :dir (s/join
+                                      File/separator
+                                      [repo-path user project])))
+                      repo-path))

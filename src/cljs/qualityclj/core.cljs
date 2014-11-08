@@ -15,7 +15,7 @@
 (defn note-source [source]
   (get {"note.source/kibit" "Kibit"
         "note.source/eastwood" "Eastwood"
-        "note.source/bikeshed" "Bikeshed"} source))
+        "note.source/conrad" "Conrad"} source))
 
 (defn note-title [note]
   (str "Note - " (note-source (:note/source note))))
