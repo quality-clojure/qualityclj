@@ -10,7 +10,6 @@
 (defn- add-note
   "Add a note from conrad to the database."
   [note repo-path]
-  (info "Adding note: " note)
   (let [path (s/replace-first (:filename note)
                               (re-pattern (str ".*" repo-path "/")) "")]
     (db/add-note path (:line-num note) (:message note) :conrad)))
