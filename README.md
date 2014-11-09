@@ -18,7 +18,7 @@ At this point, you can access the repository at `/repo/<github user or org>/<rep
 You will need:
 
 * [Clojure] - 1.6.0 or above.
-* [Leiningen] - 1.7.0 or above.
+* [Leiningen] - 2.0.0 or above.
 * [Pygments] - For syntax highlighting; will need to be available on your path.
 * [Datomic] - Currently only tested on [Datomic Free]. Try this [setup tutorial][Datomic setup tutorial] if you have trouble. Not necessary to setup Datomic Free if you are only developing.
 
