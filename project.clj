@@ -33,6 +33,8 @@
             [lein-environ "1.0.0"]
             [com.cemerick/clojurescript.test "0.3.1"]]
 
+  :deploy-repositories [["releases" :clojars]]
+
   :main qualityclj.handler
 
   :hooks [leiningen.cljsbuild]
