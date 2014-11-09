@@ -37,8 +37,6 @@
 
   :main qualityclj.handler
 
-  :hooks [leiningen.cljsbuild]
-
   :cljsbuild {:test-commands {"test" ["phantomjs"
                                       :runner "resources/private/js/polyfill.js"
                                       "resources/private/js/test.js"]}
@@ -67,7 +65,8 @@
              :test {:env {:db-uri "datomic:mem://qualityclj-test"}
                     :dependencies [[com.cemerick/clojurescript.test "0.3.1"]]}
 
-             :uberjar {:omit-source true
+             :uberjar {:hooks [leiningen.cljsbuild]
+                       :omit-source true
                        :aot [qualityclj.handler]
                        :cljsbuild {:builds
                                    {:app
