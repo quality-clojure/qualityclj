@@ -1,4 +1,4 @@
-(defproject qualityclj "0.1.0-SNAPSHOT"
+(defproject qualityclj "0.2.0-SNAPSHOT"
   :description "Assess Clojure libraries based on a number of different metrics."
   :url "https://github.com/quality-clojure/qualityclj"
 
