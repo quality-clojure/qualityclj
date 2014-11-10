@@ -1,6 +1,10 @@
 (defproject qualityclj "0.2.1-SNAPSHOT"
   :description "Assess Clojure libraries based on a number of different metrics."
   :url "https://github.com/quality-clojure/qualityclj"
+  :license {:name "Eclipse Public License - v 1.0"
+            :url "http://www.eclipse.org/legal/epl-v10.html"
+            :distribution :repo
+            :comments "same as Clojure"}
 
   :source-paths ["src/clj"]
   :test-paths ["test/clj"]
