@@ -26,15 +26,16 @@
                  [prismatic/dommy "1.0.0"]
                  [com.taoensso/timbre "3.3.1"]
                  [com.taoensso/encore "1.14.0"]
-                 [com.taoensso/sente "1.2.0"]]
+                 [com.taoensso/sente "1.2.0"]
+                 [conrad "0.1.0"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
             [com.cemerick/clojurescript.test "0.3.1"]]
 
-  :main qualityclj.handler
+  :deploy-repositories [["releases" :clojars]]
 
-  :hooks [leiningen.cljsbuild]
+  :main qualityclj.handler
 
   :cljsbuild {:test-commands {"test" ["phantomjs"
                                       :runner "resources/private/js/polyfill.js"
@@ -64,7 +65,8 @@
              :test {:env {:db-uri "datomic:mem://qualityclj-test"}
                     :dependencies [[com.cemerick/clojurescript.test "0.3.1"]]}
 
-             :uberjar {:omit-source true
+             :uberjar {:hooks [leiningen.cljsbuild]
+                       :omit-source true
                        :aot [qualityclj.handler]
                        :cljsbuild {:builds
                                    {:app

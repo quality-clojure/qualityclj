@@ -16,14 +16,16 @@
 
   TODO: Issue #21. This currently only targets Clojure and Clojurescript
   src files, not test files."
-  [uri user project repo-path]
-  (let [src-folder "src"
-        src-path (io/file (s/join File/separator
-                                  [repo-path user project src-folder]))
+  [uri user project src-path test-path repo-path]
+  (let [src-path-file (io/file (s/join File/separator
+                                       [repo-path user project src-path]))
+        test-path-file (io/file (s/join File/separator
+                                        [repo-path user project test-path]))
         files (filter #(and (.isFile %)
                             (or (.endsWith (.getPath %) "clj")
                                 (.endsWith (.getPath %) "cljs")))
-                      (file-seq src-path))]
+                      (concat (file-seq src-path-file)
+                              (file-seq test-path-file)))]
     (db/import-repo uri user project files repo-path)))
 
 (defn remove-project
