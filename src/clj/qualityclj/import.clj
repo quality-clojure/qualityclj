@@ -1,6 +1,7 @@
 (ns qualityclj.import
-  (:require [qualityclj.imports.db :as db]
+  (:require [qualityclj.imports.db :as import-db]
             [qualityclj.imports.git :as git]
+            [qualityclj.models.db :as db]
             [qualityclj.imports.highlight :as highlight]
             [qualityclj.linters.kibit :as kibit]
             [qualityclj.linters.conrad :as conrad-linter]
@@ -10,8 +11,6 @@
 (defonce in-chan (chan))
 (defonce out-chan (chan))
 
-(def repo-path "repos")
-(def highlight-path "highlight")
 (def src-path "src")
 (def test-path "test")
 
@@ -37,9 +36,11 @@
   "Given a user/org name and a project name, remove all traces of the
   project."
   [user project]
-  (git/remove-repo user project repo-path)
-  (highlight/remove-project user project highlight-path)
-  (db/remove-project user project))
+  (let [repo-path (db/repo-path)
+        highlight-path (db/highlight-path)]
+    (git/remove-repo user project repo-path)
+    (highlight/remove-project user project highlight-path)
+    (import-db/remove-project user project)))
 
 (defn send-status
   "Send current import status to the out channel."
@@ -53,13 +54,15 @@
   (go
     (send-status "Starting import" :info)
     (try
-      (let [[user project] (extract-user-project url)]
+      (let [repo-path (db/repo-path)
+            highlight-path (db/highlight-path)
+            [user project] (extract-user-project url)]
         (git/import-repo url user project repo-path)
         (send-status "Git import complete, now highlighting." :info)
         (highlight/highlight-project user project src-path test-path
                                      repo-path highlight-path)
         (send-status "Highlighting complete, now adding to database." :info)
-        (db/import-project url user project src-path test-path repo-path)
+        (import-db/import-project url user project src-path test-path repo-path)
         (send-status "Project imported to database, now linting with kibit."
                      :info)
         (kibit/kibitize-project user project repo-path)

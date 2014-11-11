@@ -28,7 +28,7 @@
   "used for starting the server in development mode from REPL"
   [& [port]]
   (let [port (if port (Integer/parseInt port) 8080)]
-    (init (env :db-uri))
+    (init)
     (reset! server (run-server (get-handler) {:port port}))
     (info (str "Server started. View the site at http://localhost:" port))))
 

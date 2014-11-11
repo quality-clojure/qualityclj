@@ -6,16 +6,20 @@
             [qualityclj.routes.repo :refer [repo-routes]]
             [compojure.core :refer [defroutes routes]]
             [compojure.route :as route]
+            [environ.core :refer [env]]
             [hiccup.middleware :refer [wrap-base-url]]
             [org.httpkit.server :refer [run-server]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults
                                               api-defaults]])
   (:gen-class))
 
-(defn init [uri]
-  (if (nil? uri)
-    (db/ensure-db)
-    (db/ensure-db uri)))
+(defn init
+  ([] (init (list (:db-uri env) "repos" "highlight")))
+  ([args]
+     (let [uri (first args)
+           repo-path (second args)
+           highlight-path (nth args 2)]
+       (db/ensure-db uri repo-path highlight-path))))
 
 (defroutes app-routes
   (route/resources "/")
@@ -43,5 +47,5 @@
   "Starts the server, ensuring that the database has been properly
   initialized. Starts on port 8090."
   [& args]
-  (init (first args))
+  (init args)
   (run-server app {}))

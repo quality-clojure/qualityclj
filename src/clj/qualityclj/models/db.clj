@@ -1,8 +1,7 @@
 (ns qualityclj.models.db
   (:require [clojure.java.io :as io]
             [clojure.string :as s]
-            [datomic.api :as d :refer [q db]]
-            [environ.core :refer [env]])
+            [datomic.api :as d :refer [q db]])
   (:import java.io.File))
 
 (def schema-tx (read-string (slurp (io/resource "data/schema.edn"))))
@@ -11,13 +10,30 @@
 (defonce conn (atom nil))
 
 (defn ensure-db
-  ([] (ensure-db (:db-uri env)))
-  ([uri]
-     (let [new? (d/create-database uri)]
-       (reset! conn (d/connect uri))
-       (when new?
-         @(d/transact @conn schema-tx)
-         @(d/transact @conn fixtures)))))
+  [uri repo-path highlight-path]
+  (let [new? (d/create-database uri)]
+    (reset! conn (d/connect uri))
+    (when new?
+      @(d/transact @conn schema-tx)
+      @(d/transact @conn fixtures)
+      @(d/transact @conn [[:db/add #db/id[:db.part/user]
+                           :path/repo repo-path]
+                          [:db/add #db/id[:db.part/user]
+                           :path/highlight highlight-path]]))))
+
+(defn repo-path
+  "Get the repo path set for this instance."
+  []
+  (ffirst (q '[:find ?path
+               :where [_ :path/repo ?path]]
+             (db @conn))))
+
+(defn highlight-path
+  "Get the highlight path set for this instance."
+  []
+  (ffirst (q '[:find ?path
+               :where [_ :path/highlight ?path]]
+             (db @conn))))
 
 (defn file->entity
   "Given a File, convert it to the appropriate db entity ready to be

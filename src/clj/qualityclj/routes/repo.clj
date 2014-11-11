@@ -8,8 +8,6 @@
             [hiccup.element :refer [link-to]])
   (:import java.io.File))
 
-(def highlight-path "highlight")
-
 (defn list-repos
   "List the repos available to view."
   []
@@ -37,7 +35,7 @@
 (defn serve-file
   "Given a filepath, serve the highlighted file."
   [filepath]
-  (let [highlight-filepath (str highlight-path File/separator filepath)
+  (let [highlight-filepath (str (db/highlight-path) File/separator filepath)
         file (io/file highlight-filepath)]
     (if (.exists file)
       (layout/common

@@ -219,4 +219,17 @@
   :db/isComponent true
   :db.install/_attribute :db.part/db}
 
+ ;;; A bit of runtime state
+ {:db/id #db/id[:db.part/db]
+  :db/ident :path/repo
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Filepath where the repos are stored"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :path/highlight
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Filepath where the highlighted source files are stored"
+  :db.install/_attribute :db.part/db}
  ]
