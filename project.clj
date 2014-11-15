@@ -23,7 +23,7 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [com.datomic/datomic-free "0.9.4899"]
                  [weasel "0.4.2"]
-                 [clj-jgit "0.8.0" :exclusions [org.clojure/core.memoize]]
+                 [clj-jgit "0.8.2"]
                  [liberator "0.12.2"]
                  [cheshire "5.3.1"]
                  [cljs-ajax "0.3.3"]

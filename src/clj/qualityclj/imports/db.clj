@@ -11,11 +11,8 @@
   considered source code in need of importing is located under the
   'src' folder at the root of the repository.
 
-  TODO: Issue #20. Parse the source directory defined in project.clj
-  and use that for importing.
-
-  TODO: Issue #21. This currently only targets Clojure and Clojurescript
-  src files, not test files."
+  TODO: Issue #21. This currently only targets Clojure and
+  Clojurescript files."
   [uri user project src-path test-path repo-path]
   (let [src-path-file (io/file (s/join File/separator
                                        [repo-path user project src-path]))
