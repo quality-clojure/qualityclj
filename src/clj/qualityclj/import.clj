@@ -2,6 +2,7 @@
   (:require [qualityclj.imports.db :as import-db]
             [qualityclj.imports.git :as git]
             [qualityclj.models.db :as db]
+            [qualityclj.linters.eastwood :as eastwood]
             [qualityclj.imports.highlight :as highlight]
             [qualityclj.linters.kibit :as kibit]
             [qualityclj.linters.conrad :as conrad-linter]
@@ -59,15 +60,22 @@
             [user project] (extract-user-project url)]
         (git/import-repo url user project repo-path)
         (send-status "Git import complete, now highlighting." :info)
+
         (highlight/highlight-project user project src-path test-path
                                      repo-path highlight-path)
         (send-status "Highlighting complete, now adding to database." :info)
+
         (import-db/import-project url user project src-path test-path repo-path)
         (send-status "Project imported to database, now linting with kibit."
                      :info)
+
         (kibit/kibitize-project user project repo-path)
         (send-status "Kibit run complete, now linting with conrad." :info)
-        (conrad-linter/check-project user project src-path test-path repo-path))
+
+        (conrad-linter/check-project user project src-path test-path repo-path)
+        (send-status "Conrad run complete, now linting with eastwood." :info)
+
+        (eastwood/eastwood-project user project))
       (>! out-chan {:id :import/status
                     :message "Import complete!"
                     :type :success})
