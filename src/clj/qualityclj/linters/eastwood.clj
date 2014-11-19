@@ -17,9 +17,7 @@
   "Parse the complete output from running eastwood."
   [output user project]
   (let [lines (line-seq (BufferedReader. (StringReader. output)))
-        _ (println "Lines to parse: " (count lines))
         comments (filter #(not (nil? (re-find #".*:.*:.*:.*" %))) lines)
-        _ (println "Comments from eastwood: " (count comments))
         comments (map parse-comment comments)]
     (doseq [entry comments]
       (println "Adding note: " entry)
@@ -35,7 +33,8 @@
   [user project]
   (let [output (docker/run user project
                  ["lein" "eastwood"
+                  ;; Ideally we'll limit this at some point, but
+                  ;; I haven't been able to pass this properly yet
                   ;;"\"{:namespaces [:source-paths]}\""
                   ])]
-    (println "Output from eastwood: " output)
     (parse-eastwood-output (:out output)  user project)))
