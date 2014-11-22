@@ -41,17 +41,22 @@ command.
 
 ### OS X
 
-This can be achieved on OSX by using the installer from
-docker: https://docs.docker.com/installation/mac/.
+This can be achieved on OSX by using the [installer][docker-mac] from
+docker.
+
+[docker-mac]: https://docs.docker.com/installation/mac/
 
 ### Linux
 Pick your favorite installation from
-https://docs.docker.com/installation/#installation, and then peruse
-https://docs.docker.com/articles/security/#docker-daemon-attack-surface
-to understand the risks, and finally follow the directions at
-https://docs.docker.com/installation/ubuntulinux/#giving-non-root-access
-to enable non-sudo access to the docker command specifically for the
+[docker's install listing][docker-install], and then peruse 
+[docker attack vectors][docker-attack]
+to understand the risks, and finally follow the directions
+to [enable non-sudo access][docker-non-sudo] to the docker command specifically for the
 user running Quality Clojure.
+
+[docker-install]: https://docs.docker.com/installation/#installation
+[docker-attack]: https://docs.docker.com/articles/security/#docker-daemon-attack-surface
+[docker-non-sudo]: https://docs.docker.com/installation/ubuntulinux/#giving-non-root-access
 
 ## Setting up a Production Instance
 
@@ -164,6 +169,7 @@ Copyright © 2014 Chris Sims and Scott Bauer
 [ClojureScript]: https://github.com/clojure/clojurescript
 [Clojure.test]: https://clojure.github.io/clojure/clojure.test-api.html
 [Pygments]: http://pygments.org/
+[Docker]: http://docker.com/
 [Datomic]: https://www.datomic.com/
 [Datomic Free]: https://my.datomic.com/downloads/free
 [Datomic setup tutorial]: http://docs.datomic.com/getting-started.html
