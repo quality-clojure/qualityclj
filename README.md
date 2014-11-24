@@ -27,10 +27,36 @@ You will need:
 * [Datomic] - Currently only tested on [Datomic Free]. Try this
   [setup tutorial][Datomic setup tutorial] if you have trouble. Not
   necessary to setup Datomic Free if you are only developing.
+* [Docker] - Used to isolate eastwood linting.
 * Until #76 is resolved, you'll need kibit installed in the user
   profile as a plugin. The user running qualityclj will need a
   profiles.clj that might look like this: `{:user {:plugins
   [[lein-kibit "0.0.8"]]}}`.
+
+
+## Docker
+
+Quality Clojure expects to have sudo-less access to the `docker`
+command.
+
+### OS X
+
+This can be achieved on OSX by using the [installer][docker-mac] from
+docker.
+
+[docker-mac]: https://docs.docker.com/installation/mac/
+
+### Linux
+Pick your favorite installation from
+[docker's install listing][docker-install], and then peruse 
+[docker attack vectors][docker-attack]
+to understand the risks, and finally follow the directions
+to [enable non-sudo access][docker-non-sudo] to the docker command specifically for the
+user running Quality Clojure.
+
+[docker-install]: https://docs.docker.com/installation/#installation
+[docker-attack]: https://docs.docker.com/articles/security/#docker-daemon-attack-surface
+[docker-non-sudo]: https://docs.docker.com/installation/ubuntulinux/#giving-non-root-access
 
 ## Setting up a Production Instance
 
@@ -143,6 +169,7 @@ Copyright © 2014 Chris Sims and Scott Bauer
 [ClojureScript]: https://github.com/clojure/clojurescript
 [Clojure.test]: https://clojure.github.io/clojure/clojure.test-api.html
 [Pygments]: http://pygments.org/
+[Docker]: http://docker.com/
 [Datomic]: https://www.datomic.com/
 [Datomic Free]: https://my.datomic.com/downloads/free
 [Datomic setup tutorial]: http://docs.datomic.com/getting-started.html
