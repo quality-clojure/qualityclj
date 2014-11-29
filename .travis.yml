@@ -1,3 +1,6 @@
 language: clojure
 notifications:
-  irc: "jcsi.ms#qualityclj"
+  irc: 
+    channels:
+     - "jcsi.ms#qualityclj"
+    use_notice: true
