@@ -4,3 +4,4 @@ notifications:
     channels:
      - "jcsi.ms#qualityclj"
     use_notice: true
+    skip_join: true
