@@ -1,1 +1,3 @@
 language: clojure
+notifications:
+  irc: "jcsi.ms#qualityclj"
