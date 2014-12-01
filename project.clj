@@ -1,4 +1,4 @@
-(defproject qualityclj "0.2.3-SNAPSHOT"
+(defproject qualityclj "0.2.3"
   :description "Assess Clojure libraries based on a number of different metrics."
   :url "https://github.com/quality-clojure/qualityclj"
   :license {:name "Eclipse Public License - v 1.0"
